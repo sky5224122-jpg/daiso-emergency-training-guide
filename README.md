@@ -27,7 +27,7 @@ assets/screens/*.png        실제 앱 화면 캡처 (2026 하반기)
 assets/qr-app.png           훈련 앱 접속 QR
 assets/qr-code.png          이 가이드 접속 QR
 tools/narration.json        영상 내레이션 대본(음성용 문장 / 자막 문장)
-tools/make_narration.py     내레이션 음성 생성 (오프라인 한국어 음성)
+tools/make_narration.py     내레이션 음성 생성 (Supertonic 3 한국어 음성, 오프라인)
 tools/build_intro_video.py  안내 영상 제작
 .nojekyll                   GitHub Pages가 파일을 그대로 배포하도록 지정
 ```
@@ -35,7 +35,8 @@ tools/build_intro_video.py  안내 영상 제작
 ## 영상 다시 만들기
 
 1. `tools/narration.json`의 대본을 고칩니다. `tts`는 읽을 문장(숫자는 한글로), `sub`는 화면 자막입니다.
-2. 음성 생성: `python tools/make_narration.py tools/narration.json voice 10 0.5`
+2. 음성 생성: `python tools/make_narration.py --model <Supertonic 3 폴더> --asr <한국어 ASR 폴더> --out voice --sid 3 --speed 1.08`
+   - 목소리: Supertonic 3(Supertone, OpenRAIL-M) 여성 3번. 문장마다 3번 합성해 음성인식으로 가장 또렷한 것을 고릅니다.
 3. 영상 제작: `python tools/build_intro_video.py --voice voice --fonts <Pretendard 폴더>`
    - 장면 배치만 확인: `--preview 12,30,60` (해당 초의 장면을 PNG로 저장)
 
