@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>비상대응훈련 실행 가이드 | 아성다이소</title>
+<meta name="description" content="아성다이소 매장 비상대응훈련 웹앱 실행 가이드 — 점장·관리감독자용">
+<meta name="theme-color" content="#1E3A6E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231E3A6E'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Arial,sans-serif' font-size='17' font-weight='900' fill='%23fff'%3ED%3C/text%3E%3C/svg%3E">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root {
+  --c-bg: #F4F6FA;
+  --c-surface: #FFFFFF;
+  --c-surface-alt: #EDF0F7;
+  --c-border: #D4DAE5;
+  --c-border-light: #E5E9F0;
+  --c-text: #111827;
+  --c-text-secondary: #4B5563;
+  --c-text-muted: #6B7280;
+  --c-primary: #1E3A6E;
+  --c-primary-light: #E0E8F5;
+  --c-primary-dark: #0F2244;
+  --c-primary-gradient: linear-gradient(135deg, #1E3A6E 0%, #2B5EA7 100%);
+  --c-on-primary: #FFFFFF;
+  --c-accent: #0D6B4C;
+  --c-daiso-red: #D0272D;
+  --c-success: #059669;
+  --c-success-light: #D1FAE5;
+  --c-success-text: #065F46;
+  --c-warning: #D97706;
+  --c-warning-light: #FEF3C7;
+  --c-warning-text: #92400E;
+  --c-danger: #DC2626;
+  --c-danger-light: #FEE2E2;
+  --c-danger-text: #991B1B;
+  --c-danger-strong: #DC2626;
+  --c-overlay: rgba(15,23,42,0.55);
+  --c-card-shadow: 0 1px 3px rgba(15,23,42,0.08), 0 1px 2px rgba(15,23,42,0.04);
+  --c-card-shadow-hover: 0 8px 25px rgba(15,23,42,0.12);
+  --c-nav-bg: #FFFFFF;
+  --c-nav-text: #6B7280;
+  --c-nav-active: #1E3A6E;
+  --c-hero-bg: linear-gradient(160deg, #0F2244 0%, #1E3A6E 40%, #2B5EA7 100%);
+  --c-hero-text: #FFFFFF;
+  --c-hero-sub: rgba(255,255,255,0.75);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-xs: 5px;
+  --font: 'Apple SD Gothic Neo','Malgun Gothic','맑은 고딕','Segoe UI',sans-serif;
+  --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+  --content-max: 720px;
+  --content-wide: 960px;
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --c-bg:#0C111B;--c-surface:#161D2E;--c-surface-alt:#1E2740;
+    --c-border:#2D3A52;--c-border-light:#232E44;
+    --c-text:#E5E7EB;--c-text-secondary:#9CA3B8;--c-text-muted:#8B93A7;
+    --c-primary:#7BA4D9;--c-primary-light:#1A2B46;--c-primary-dark:#B4CDE8;
+    --c-primary-gradient:linear-gradient(135deg,#1A2B46 0%,#233B60 100%);
+    --c-on-primary:#0C111B;
+    --c-accent:#3FA184;--c-success:#34D399;--c-success-light:#064E3B;--c-success-text:#6EE7B7;
+    --c-daiso-red:#E2585C;
+    --c-warning:#FBBF24;--c-warning-light:#78350F;--c-warning-text:#FCD34D;
+    --c-danger:#F87171;--c-danger-light:#7F1D1D;--c-danger-text:#FECACA;--c-danger-strong:#B91C1C;
+    --c-overlay:rgba(0,0,0,0.7);
+    --c-card-shadow:0 1px 3px rgba(0,0,0,0.3);
+    --c-card-shadow-hover:0 8px 25px rgba(0,0,0,0.4);
+    --c-nav-bg:#161D2E;--c-nav-text:#8B93A7;--c-nav-active:#7BA4D9;
+    --c-hero-bg:linear-gradient(160deg,#0C111B 0%,#161D2E 40%,#1E2740 100%);
+    --c-hero-text:#E5E7EB;--c-hero-sub:rgba(229,231,235,0.65);
+  }
+}
+:root[data-theme="dark"]{
+  --c-bg:#0C111B;--c-surface:#161D2E;--c-surface-alt:#1E2740;
+  --c-border:#2D3A52;--c-border-light:#232E44;
+  --c-text:#E5E7EB;--c-text-secondary:#9CA3B8;--c-text-muted:#8B93A7;
+  --c-primary:#7BA4D9;--c-primary-light:#1A2B46;--c-primary-dark:#B4CDE8;
+  --c-primary-gradient:linear-gradient(135deg,#1A2B46 0%,#233B60 100%);
+  --c-on-primary:#0C111B;
+  --c-accent:#3FA184;--c-success:#34D399;--c-success-light:#064E3B;--c-success-text:#6EE7B7;
+  --c-daiso-red:#E2585C;
+  --c-warning:#FBBF24;--c-warning-light:#78350F;--c-warning-text:#FCD34D;
+  --c-danger:#F87171;--c-danger-light:#7F1D1D;--c-danger-text:#FECACA;--c-danger-strong:#B91C1C;
+  --c-overlay:rgba(0,0,0,0.7);
+  --c-card-shadow:0 1px 3px rgba(0,0,0,0.3);
+  --c-card-shadow-hover:0 8px 25px rgba(0,0,0,0.4);
+  --c-nav-bg:#161D2E;--c-nav-text:#8B93A7;--c-nav-active:#7BA4D9;
+  --c-hero-bg:linear-gradient(160deg,#0C111B 0%,#161D2E 40%,#1E2740 100%);
+  --c-hero-text:#E5E7EB;--c-hero-sub:rgba(229,231,235,0.65);
+}
+:root[data-theme="light"]{
+  --c-bg:#F4F6FA;--c-surface:#FFFFFF;--c-surface-alt:#EDF0F7;
+  --c-border:#D4DAE5;--c-border-light:#E5E9F0;
+  --c-text:#111827;--c-text-secondary:#4B5563;--c-text-muted:#6B7280;
+  --c-primary:#1E3A6E;--c-primary-light:#E0E8F5;--c-primary-dark:#0F2244;
+  --c-primary-gradient:linear-gradient(135deg,#1E3A6E 0%,#2B5EA7 100%);
+  --c-on-primary:#FFFFFF;
+  --c-accent:#0D6B4C;--c-success:#059669;--c-success-light:#D1FAE5;--c-success-text:#065F46;
+  --c-daiso-red:#D0272D;
+  --c-warning:#D97706;--c-warning-light:#FEF3C7;--c-warning-text:#92400E;
+  --c-danger:#DC2626;--c-danger-light:#FEE2E2;--c-danger-text:#991B1B;--c-danger-strong:#DC2626;
+  --c-overlay:rgba(15,23,42,0.55);
+  --c-card-shadow:0 1px 3px rgba(15,23,42,0.08),0 1px 2px rgba(15,23,42,0.04);
+  --c-card-shadow-hover:0 8px 25px rgba(15,23,42,0.12);
+  --c-nav-bg:#FFFFFF;--c-nav-text:#6B7280;--c-nav-active:#1E3A6E;
+  --c-hero-bg:linear-gradient(160deg,#0F2244 0%,#1E3A6E 40%,#2B5EA7 100%);
+  --c-hero-text:#FFFFFF;--c-hero-sub:rgba(255,255,255,0.75);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--c-bg);color:var(--c-text);line-height:1.65;min-height:100dvh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:var(--c-primary);text-decoration:none}
+img{max-width:100%;display:block}
+
+/* ═══ APP SHELL ═══ */
+#app{display:block;min-height:100dvh;padding-bottom:72px}
+
+/* Top bar */
+.top-bar{position:sticky;top:0;z-index:100;background:var(--c-surface);border-bottom:1px solid var(--c-border-light);height:56px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(12px);padding:0 20px}
+@media(min-width:768px){.top-bar{padding:0 32px}}
+.top-bar-brand{display:flex;align-items:center;gap:10px}
+.top-bar-logo{width:32px;height:32px;background:var(--c-primary-gradient);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:14px;letter-spacing:-0.5px}
+.top-bar-text{font-size:15px;font-weight:700;color:var(--c-text);letter-spacing:-0.3px}
+.top-bar-sub{font-size:11px;color:var(--c-text-muted);margin-left:8px;font-weight:500;display:none}
+@media(min-width:768px){.top-bar-sub{display:inline}}
+.top-bar-actions{display:flex;gap:6px}
+.top-bar-btn{width:36px;height:36px;border-radius:8px;border:none;background:var(--c-surface-alt);color:var(--c-text-secondary);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.top-bar-btn:hover{background:var(--c-primary-light);color:var(--c-primary)}
+.top-bar-btn:active{transform:scale(.92)}
+
+/* Bottom nav */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:var(--c-nav-bg);border-top:1px solid var(--c-border-light);display:flex;height:64px;padding-bottom:env(safe-area-inset-bottom,0)}
+@media(min-width:768px){.bottom-nav{display:none}}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:none;color:var(--c-nav-text);font-size:10px;font-weight:600;cursor:pointer;transition:color .15s;-webkit-tap-highlight-color:transparent;position:relative}
+.nav-btn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav-btn.active{color:var(--c-nav-active)}
+.nav-btn.active::after{content:'';position:absolute;top:-1px;left:50%;transform:translateX(-50%);width:28px;height:3px;background:var(--c-nav-active);border-radius:0 0 4px 4px}
+
+/* PC sidebar nav */
+.pc-sidebar{display:none}
+@media(min-width:768px){
+  .pc-sidebar{display:flex;flex-direction:column;position:fixed;left:0;top:56px;bottom:0;width:220px;background:var(--c-surface);border-right:1px solid var(--c-border-light);padding:24px 0;z-index:50;overflow-y:auto}
+  #app{padding-bottom:0}
+  .page{margin-left:220px!important}
+  .top-bar{padding-left:20px}
+}
+.pc-nav-item{display:flex;align-items:center;gap:10px;padding:11px 24px;font-size:14px;font-weight:600;color:var(--c-text-secondary);cursor:pointer;transition:all .15s;border-left:3px solid transparent;letter-spacing:-0.2px}
+.pc-nav-item:hover{background:var(--c-surface-alt);color:var(--c-text)}
+.pc-nav-item.active{color:var(--c-primary);background:var(--c-primary-light);border-left-color:var(--c-primary)}
+.pc-nav-icon{font-size:18px;width:24px;text-align:center;flex-shrink:0}
+.pc-nav-divider{height:1px;background:var(--c-border-light);margin:16px 24px}
+.pc-nav-label{padding:6px 24px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--c-text-muted)}
+
+/* Pages */
+.page{display:none;padding:20px 20px 32px;max-width:var(--content-max);margin:0 auto;animation:fadeUp .3s ease}
+.page.active{display:block}
+@media(min-width:768px){.page{padding:32px 40px 48px;max-width:var(--content-wide)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* ═══ HERO — 모바일은 화면 끝까지, PC는 둥근 배너 ═══ */
+.hero-banner{background:var(--c-hero-bg);color:var(--c-hero-text);padding:40px 24px 36px;text-align:center;position:relative;overflow:hidden;margin:-20px -20px 28px}
+@media(min-width:768px){
+  .hero-banner{padding:56px 48px 48px;text-align:left;display:flex;align-items:center;gap:48px;margin:0 0 32px;border-radius:var(--radius)}
+}
+.hero-banner::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,0.04)}
+.hero-banner::after{content:'';position:absolute;bottom:-60px;left:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.03)}
+.hero-content{position:relative;z-index:1;flex:1}
+.hero-badge{display:inline-block;padding:5px 14px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1.5px;background:rgba(255,255,255,0.15);color:var(--c-hero-text);margin-bottom:14px;backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.1)}
+.hero-title{font-size:26px;font-weight:900;line-height:1.3;margin-bottom:10px;text-wrap:balance;letter-spacing:-0.5px}
+@media(min-width:768px){.hero-title{font-size:34px}}
+.hero-desc{font-size:14px;color:var(--c-hero-sub);line-height:1.7;max-width:420px}
+@media(min-width:768px){.hero-desc{font-size:15px}}
+.hero-stats{position:relative;z-index:1;display:flex;gap:12px;margin-top:20px;justify-content:center}
+@media(min-width:768px){.hero-stats{flex-direction:column;gap:10px;margin-top:0;flex-shrink:0;width:180px}}
+.hero-stat{background:rgba(255,255,255,0.1);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-sm);padding:10px 14px;text-align:center}
+@media(min-width:768px){.hero-stat{text-align:left;display:flex;align-items:center;gap:10px}}
+.hero-stat-num{font-size:20px;font-weight:900;display:block}
+@media(min-width:768px){.hero-stat-num{font-size:22px}}
+.hero-stat-label{font-size:10px;color:var(--c-hero-sub);letter-spacing:0.5px;font-weight:600}
+
+/* Section headers */
+.section-eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--c-primary);margin-bottom:6px}
+.section-title{font-size:22px;font-weight:800;color:var(--c-text);line-height:1.3;margin-bottom:6px;text-wrap:balance;letter-spacing:-0.3px}
+@media(min-width:768px){.section-title{font-size:26px}}
+.section-desc{font-size:14px;color:var(--c-text-secondary);line-height:1.6;margin-bottom:24px}
+
+/* Cards */
+.card{background:var(--c-surface);border:1px solid var(--c-border-light);border-radius:var(--radius);padding:20px;box-shadow:var(--c-card-shadow);transition:box-shadow .2s,transform .2s;margin-bottom:14px}
+.card:hover{box-shadow:var(--c-card-shadow-hover)}
+
+/* Info box */
+.info-box{padding:14px 16px;border-radius:var(--radius-sm);margin-bottom:14px;font-size:13px;line-height:1.6;display:flex;gap:10px;align-items:flex-start}
+.info-box .ib-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.info-box.info{background:var(--c-primary-light);color:var(--c-primary-dark);border:1px solid var(--c-primary)}
+.info-box.warn{background:var(--c-warning-light);color:var(--c-warning-text);border:1px solid var(--c-warning)}
+.info-box.danger{background:var(--c-danger-light);color:var(--c-danger-text);border:1px solid var(--c-danger)}
+.info-box.success{background:var(--c-success-light);color:var(--c-success-text);border:1px solid var(--c-success)}
+
+/* Menu grid */
+.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+@media(min-width:768px){.menu-grid{grid-template-columns:repeat(4,1fr);gap:16px}}
+.menu-card{background:var(--c-surface);border:1px solid var(--c-border-light);border-radius:var(--radius);padding:20px 16px;text-align:center;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden}
+.menu-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--c-primary-gradient);opacity:0;transition:opacity .2s}
+.menu-card:hover{box-shadow:var(--c-card-shadow-hover);transform:translateY(-2px)}
+.menu-card:hover::before{opacity:1}
+.menu-card:active{transform:scale(.97)}
+.menu-card-icon{font-size:32px;margin-bottom:10px}
+@media(min-width:768px){.menu-card-icon{font-size:36px;margin-bottom:12px}}
+.menu-card-title{font-size:15px;font-weight:700;margin-bottom:4px;letter-spacing:-0.2px}
+.menu-card-desc{font-size:12px;color:var(--c-text-muted);line-height:1.5}
+
+/* Step flow chips */
+.step-flow{display:flex;align-items:center;gap:0;margin-bottom:20px;overflow-x:auto;padding:4px 0;-webkit-overflow-scrolling:touch}
+.step-chip{padding:8px 14px;border-radius:24px;font-size:12px;font-weight:700;white-space:nowrap;background:var(--c-surface-alt);color:var(--c-text-muted);border:1px solid var(--c-border-light);transition:all .2s;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.step-chip.active{background:var(--c-primary);color:var(--c-on-primary);border-color:var(--c-primary);box-shadow:0 2px 8px rgba(30,58,110,0.3)}
+.step-chip.done{background:var(--c-success-light);color:var(--c-success-text);border-color:var(--c-success)}
+.step-arrow{color:var(--c-text-muted);font-size:14px;margin:0 2px;flex-shrink:0}
+
+/* Step navigation buttons */
+.step-nav{display:flex;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid var(--c-border-light)}
+.step-nav-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:14px 18px;border-radius:var(--radius-sm);font-size:14px;font-weight:700;cursor:pointer;transition:all .15s;border:none;letter-spacing:-0.2px;font-family:var(--font)}
+.step-nav-btn:active{transform:scale(.97)}
+.step-nav-btn.prev{background:var(--c-surface-alt);color:var(--c-text-secondary);border:1px solid var(--c-border)}
+.step-nav-btn.prev:hover{background:var(--c-surface);border-color:var(--c-primary);color:var(--c-primary)}
+.step-nav-btn.next{background:var(--c-primary-gradient);color:#fff;border:none;box-shadow:0 2px 8px rgba(30,58,110,0.25)}
+.step-nav-btn.next:hover{box-shadow:0 4px 12px rgba(30,58,110,0.35)}
+.step-nav-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* Step detail card */
+.step-detail{background:var(--c-surface);border:1px solid var(--c-border-light);border-radius:var(--radius);overflow:hidden;margin-bottom:16px;box-shadow:var(--c-card-shadow)}
+.step-detail-header{padding:18px 20px;border-bottom:1px solid var(--c-border-light);display:flex;align-items:center;gap:14px}
+@media(min-width:768px){.step-detail-header{padding:20px 24px}}
+.step-num{width:36px;height:36px;border-radius:50%;background:var(--c-primary-gradient);color:#fff;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-detail-title{font-size:17px;font-weight:700;letter-spacing:-0.2px}
+@media(min-width:768px){.step-detail-title{font-size:18px}}
+.step-detail-body{padding:20px}
+@media(min-width:768px){.step-detail-body{padding:24px}}
+.step-detail-body ul{padding-left:18px;margin:8px 0}
+.step-detail-body li{margin-bottom:8px;font-size:14px;color:var(--c-text-secondary);line-height:1.7}
+.step-detail-body li strong{color:var(--c-text);font-weight:600}
+
+/* FAQ */
+.faq-item{background:var(--c-surface);border:1px solid var(--c-border-light);border-radius:var(--radius-sm);margin-bottom:8px;overflow:hidden;box-shadow:var(--c-card-shadow);transition:box-shadow .2s}
+.faq-item:hover{box-shadow:var(--c-card-shadow-hover)}
+.faq-q{padding:16px 18px;font-size:14px;font-weight:600;display:flex;align-items:center;gap:12px;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
+.faq-q .q-badge{background:var(--c-primary-gradient);color:#fff;font-size:11px;font-weight:800;width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.faq-q .q-arrow{margin-left:auto;color:var(--c-text-muted);transition:transform .25s;font-size:14px}
+.faq-item.open .q-arrow{transform:rotate(180deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.faq-item.open .faq-a{max-height:500px}
+.faq-a-inner{padding:0 18px 18px;font-size:13px;color:var(--c-text-secondary);line-height:1.7;border-top:1px solid var(--c-border-light);padding-top:14px;margin:0 8px}
+
+/* Search */
+.search-wrap{position:relative;margin-bottom:16px}
+.search-input{width:100%;padding:14px 18px 14px 46px;border:1px solid var(--c-border);border-radius:var(--radius);background:var(--c-surface);color:var(--c-text);font-size:16px;font-family:var(--font);outline:none;transition:border-color .2s,box-shadow .2s;box-shadow:var(--c-card-shadow)}
+.search-input:focus{border-color:var(--c-primary);box-shadow:0 0 0 3px rgba(30,58,110,0.1)}
+.search-input::placeholder{color:var(--c-text-muted)}
+.search-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--c-text-muted);font-size:16px}
+.search-tag{display:inline-block;padding:7px 16px;border-radius:24px;font-size:12px;font-weight:600;background:var(--c-surface);color:var(--c-text-secondary);border:1px solid var(--c-border-light);cursor:pointer;margin:0 4px 8px 0;transition:all .15s;box-shadow:var(--c-card-shadow)}
+.search-tag:hover{border-color:var(--c-primary);color:var(--c-primary);background:var(--c-primary-light)}
+.search-result{padding:16px 18px;background:var(--c-surface);border:1px solid var(--c-border-light);border-radius:var(--radius-sm);margin-bottom:8px;cursor:pointer;box-shadow:var(--c-card-shadow);transition:all .15s}
+.search-result:hover{box-shadow:var(--c-card-shadow-hover);transform:translateY(-1px)}
+.search-result-title{font-size:14px;font-weight:600;margin-bottom:4px}
+.search-result-text{font-size:12px;color:var(--c-text-secondary);line-height:1.5}
+.search-result mark{background:var(--c-warning-light);color:var(--c-warning-text);padding:1px 4px;border-radius:3px}
+#searchEmpty{display:none;text-align:center;padding:40px 20px;color:var(--c-text-muted);font-size:14px}
+
+/* Penalty table */
+.penalty-table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--c-border-light)}
+.penalty-table th{background:var(--c-primary);color:var(--c-on-primary);padding:11px 14px;text-align:left;font-weight:600;font-size:12px}
+.penalty-table td{padding:11px 14px;border-bottom:1px solid var(--c-border-light);vertical-align:top;background:var(--c-surface)}
+.penalty-table tr:last-child td{border-bottom:none}
+
+/* Approval flow */
+.approval-flow{display:flex;flex-direction:column;gap:0;margin:16px 0}
+.approval-step{display:flex;align-items:flex-start;gap:14px;position:relative;padding-bottom:22px}
+.approval-step:last-child{padding-bottom:0}
+.approval-step::before{content:'';position:absolute;left:18px;top:40px;bottom:0;width:2px;background:var(--c-border-light)}
+.approval-step:last-child::before{display:none}
+.approval-dot{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;z-index:1}
+.approval-dot.blue{background:var(--c-primary-light);color:var(--c-primary)}
+.approval-dot.green{background:var(--c-success-light);color:var(--c-success)}
+.approval-dot.amber{background:var(--c-warning-light);color:var(--c-warning)}
+.approval-content{flex:1}
+.approval-content h4{font-size:15px;font-weight:700;margin-bottom:3px}
+.approval-content p{font-size:13px;color:var(--c-text-secondary);line-height:1.5}
+
+/* Back button */
+.back-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:var(--radius-xs);border:1px solid var(--c-border-light);background:var(--c-surface);color:var(--c-text-secondary);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:20px;transition:all .15s;box-shadow:var(--c-card-shadow);font-family:var(--font)}
+.back-btn:hover{border-color:var(--c-primary);color:var(--c-primary)}
+@media(min-width:768px){.back-btn{display:none}}
+
+/* Expandable notice */
+.notice-collapsible{background:var(--c-surface);border:1px solid var(--c-border-light);border-radius:var(--radius);overflow:hidden;margin-bottom:14px;box-shadow:var(--c-card-shadow);transition:box-shadow .2s}
+.notice-collapsible:hover{box-shadow:var(--c-card-shadow-hover)}
+.notice-header{padding:14px 18px;cursor:pointer;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;-webkit-tap-highlight-color:transparent}
+.notice-header .n-icon{font-size:18px}
+.notice-header .n-arrow{margin-left:auto;transition:transform .25s;font-size:12px;color:var(--c-text-muted)}
+.notice-collapsible.open .n-arrow{transform:rotate(180deg)}
+.notice-body{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.notice-collapsible.open .notice-body{max-height:1200px}
+.notice-body-inner{padding:0 18px 18px;font-size:13px;color:var(--c-text-secondary);line-height:1.7}
+
+/* Glossary — 영어 용어(한글 발음, 뜻, 쓰임) */
+.glossary{list-style:none;display:grid;grid-template-columns:1fr;gap:8px}
+@media(min-width:768px){.glossary{grid-template-columns:1fr 1fr}}
+.glossary li{padding:12px 14px;background:var(--c-surface-alt);border-radius:var(--radius-sm);border-left:3px solid var(--c-primary)}
+.glossary-term{font-size:15px;font-weight:800;color:var(--c-primary);letter-spacing:0.3px}
+.glossary-read{font-size:12px;font-weight:600;color:var(--c-text-muted);margin-left:4px}
+.glossary-mean{font-size:13px;font-weight:700;color:var(--c-text);margin-top:2px}
+.glossary-use{font-size:12px;color:var(--c-text-secondary);margin-top:2px;line-height:1.6}
+
+/* QR card */
+.qr-card{display:flex;gap:18px;align-items:center;background:var(--c-surface);border:1px solid var(--c-border-light);border-radius:var(--radius);padding:20px;box-shadow:var(--c-card-shadow);transition:box-shadow .2s}
+.qr-card:hover{box-shadow:var(--c-card-shadow-hover)}
+.qr-img{width:96px;height:96px;flex-shrink:0;border-radius:8px;border:1px solid var(--c-border-light);background:#fff}
+.qr-info{flex:1;min-width:0}
+.qr-title{font-size:15px;font-weight:700;margin-bottom:4px}
+.qr-desc{font-size:13px;color:var(--c-text-secondary);line-height:1.5;margin-bottom:8px}
+.qr-url{font-size:11px;color:var(--c-text-muted);word-break:break-all;margin-bottom:10px;font-family:'SF Mono','Fira Code','Consolas',monospace;background:var(--c-surface-alt);padding:4px 8px;border-radius:4px;display:inline-block}
+.qr-copy-btn{padding:8px 14px;border-radius:var(--radius-xs);border:1px solid var(--c-border);background:var(--c-surface-alt);color:var(--c-text);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;font-family:var(--font)}
+.qr-copy-btn:hover{border-color:var(--c-primary);color:var(--c-primary);background:var(--c-primary-light)}
+.qr-copy-btn:active{transform:scale(.95)}
+.qr-copy-btn.copied{background:var(--c-success-light);color:var(--c-success-text);border-color:var(--c-success)}
+
+/* Screenshot frame — 앱 화면 캡처를 추가할 때 사용 */
+.screenshot-frame{position:relative;margin:16px 0;border-radius:var(--radius);overflow:hidden;border:1px solid var(--c-border-light);box-shadow:var(--c-card-shadow);background:var(--c-surface-alt);transition:box-shadow .2s}
+.screenshot-frame:hover{box-shadow:var(--c-card-shadow-hover)}
+.screenshot-frame img{width:100%;display:block;cursor:zoom-in}
+#lightbox{position:fixed;inset:0;z-index:9998;background:rgba(10,14,24,.92);display:none;align-items:center;justify-content:center;padding:20px;cursor:zoom-out}
+#lightbox.open{display:flex}
+#lightbox img{max-width:100%;max-height:100%;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.4)}
+.screenshot-badge{position:absolute;top:10px;left:10px;background:rgba(15,34,68,.85);color:#fff;font-size:10px;font-weight:700;letter-spacing:1.2px;padding:4px 10px;border-radius:5px;z-index:2;text-transform:uppercase;backdrop-filter:blur(4px)}
+.screenshot-caption{padding:10px 16px;font-size:12px;color:var(--c-text-secondary);background:var(--c-surface);border-top:1px solid var(--c-border-light);text-align:center;font-weight:500}
+.screenshot-frame.narrow{max-width:280px;margin-left:auto;margin-right:auto}
+.screenshot-frame.wide{max-width:100%}
+.screenshot-frame.wide img{background:#fff}
+
+/* Sidebar overlay (mobile) */
+#sideMenu{position:fixed;inset:0;z-index:200;pointer-events:none;opacity:0;transition:opacity .3s}
+#sideMenu.open{pointer-events:auto;opacity:1}
+.side-overlay{position:absolute;inset:0;background:var(--c-overlay)}
+.side-panel{position:absolute;right:0;top:0;bottom:0;width:300px;max-width:85vw;background:var(--c-surface);transform:translateX(100%);transition:transform .3s ease;padding:24px;overflow-y:auto}
+#sideMenu.open .side-panel{transform:translateX(0)}
+.side-close{width:36px;height:36px;border-radius:8px;border:1px solid var(--c-border-light);background:var(--c-surface-alt);color:var(--c-text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+.side-link{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--c-border-light);font-size:14px;font-weight:600;color:var(--c-text);cursor:pointer;transition:color .15s}
+.side-link:hover{color:var(--c-primary)}
+.side-link:last-child{border-bottom:none}
+.side-link .sl-icon{font-size:18px;width:28px;text-align:center}
+@media(min-width:768px){#sideMenu{display:none}}
+
+/* Misc */
+.divider{height:1px;background:var(--c-border-light);margin:24px 0}
+.badge{display:inline-block;padding:3px 10px;border-radius:5px;font-size:11px;font-weight:700}
+.badge-blue{background:var(--c-primary-light);color:var(--c-primary)}
+.badge-green{background:var(--c-success-light);color:var(--c-success-text)}
+.badge-amber{background:var(--c-warning-light);color:var(--c-warning-text)}
+.badge-red{background:var(--c-danger-light);color:var(--c-danger-text)}
+.text-center{text-align:center}
+.mt-8{margin-top:8px}
+.mt-16{margin-top:16px}
+.mb-8{margin-bottom:8px}
+.mb-16{margin-bottom:16px}
+.mb-24{margin-bottom:24px}
+
+/* Required checklist card */
+.required-card{background:var(--c-surface);border:2px solid var(--c-danger);border-radius:var(--radius);overflow:hidden;margin-bottom:24px;box-shadow:0 2px 12px rgba(220,38,38,0.1)}
+.required-card-header{background:var(--c-danger-strong);color:#fff;padding:14px 20px;display:flex;align-items:center;gap:10px;font-size:15px;font-weight:800;letter-spacing:-0.2px}
+.required-card-header span{font-size:20px}
+.required-card-body{padding:18px 20px}
+.required-card-body p{font-size:14px;font-weight:700;color:var(--c-danger);line-height:1.6;margin-bottom:14px}
+.req-list{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr;gap:6px}
+@media(min-width:768px){.req-list{grid-template-columns:1fr 1fr}}
+.req-list li{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--c-danger-light);border-radius:var(--radius-sm);font-size:13px;font-weight:600;color:var(--c-text)}
+.req-list li .req-icon{font-size:15px;flex-shrink:0}
+
+/* Footer */
+.page-footer{text-align:center;padding:28px 0 8px;font-size:11px;color:var(--c-text-muted);line-height:1.6;border-top:1px solid var(--c-border-light);margin-top:32px}
+.page-footer strong{color:var(--c-text-secondary);font-weight:600}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--c-border);border-radius:4px}
+
+@media(display-mode:standalone){
+  body{padding-top:env(safe-area-inset-top,0)}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ SIDE MENU (mobile only) ═══════════ -->
+<div id="sideMenu">
+  <div class="side-overlay" onclick="closeSide()"></div>
+  <div class="side-panel">
+    <button class="side-close" onclick="closeSide()" aria-label="메뉴 닫기">&times;</button>
+    <div style="font-size:11px;color:var(--c-text-muted);letter-spacing:2px;margin-bottom:6px">DAISO SAFETY</div>
+    <div style="font-size:18px;font-weight:800;margin-bottom:20px;letter-spacing:-0.3px">비상대응훈련 실행 가이드</div>
+    <div class="side-link" onclick="goPage('home');closeSide()"><span class="sl-icon">&#127968;</span>메인</div>
+    <div class="side-link" onclick="goPage('login');closeSide()"><span class="sl-icon">&#128273;</span>접속 방법</div>
+    <div class="side-link" onclick="goPage('guide');closeSide()"><span class="sl-icon">&#128203;</span>훈련 실행 가이드</div>
+    <div class="side-link" onclick="goPage('approval');closeSide()"><span class="sl-icon">&#9989;</span>제출·승인</div>
+    <div class="side-link" onclick="goPage('faq');closeSide()"><span class="sl-icon">&#10067;</span>자주 묻는 질문</div>
+    <div class="side-link" onclick="goPage('search');closeSide()"><span class="sl-icon">&#128269;</span>검색</div>
+    <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--c-border-light);font-size:11px;color:var(--c-text-muted);line-height:1.6">
+      안전보건팀 &middot; 2026년 하반기<br>
+      CPR&middot;응급환자 대응훈련 가이드
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ APP ═══════════ -->
+<div id="app">
+  <div class="top-bar">
+    <div class="top-bar-brand">
+      <div class="top-bar-logo">D</div>
+      <div class="top-bar-text" id="topBarTitle">실행 가이드</div>
+      <span class="top-bar-sub">아성다이소 안전보건팀</span>
+    </div>
+    <div class="top-bar-actions">
+      <button class="top-bar-btn" onclick="openSide()" aria-label="메뉴" style="display:none" id="mobileMenuBtn">&#9776;</button>
+    </div>
+  </div>
+
+  <nav class="pc-sidebar">
+    <div class="pc-nav-label">가이드</div>
+    <div class="pc-nav-item active" data-page="home" onclick="goPage('home')"><span class="pc-nav-icon">&#127968;</span>메인</div>
+    <div class="pc-nav-item" data-page="login" onclick="goPage('login')"><span class="pc-nav-icon">&#128273;</span>접속 방법</div>
+    <div class="pc-nav-item" data-page="guide" onclick="goPage('guide')"><span class="pc-nav-icon">&#128203;</span>훈련 실행 가이드</div>
+    <div class="pc-nav-item" data-page="approval" onclick="goPage('approval')"><span class="pc-nav-icon">&#9989;</span>제출·승인</div>
+    <div class="pc-nav-divider"></div>
+    <div class="pc-nav-label">도움말</div>
+    <div class="pc-nav-item" data-page="faq" onclick="goPage('faq')"><span class="pc-nav-icon">&#10067;</span>자주 묻는 질문</div>
+    <div class="pc-nav-item" data-page="search" onclick="goPage('search')"><span class="pc-nav-icon">&#128269;</span>검색</div>
+  </nav>
+
+  <!-- ═══ HOME ═══ -->
+  <div class="page active" id="page-home">
+
+    <div class="hero-banner">
+      <div class="hero-content">
+        <div class="hero-badge">2026 하반기</div>
+        <div class="hero-title">비상대응훈련<br>웹앱 실행 가이드</div>
+        <div class="hero-desc">하반기 훈련 주제는 CPR·응급환자 대응입니다.<br>계획 → 교육 → 실행 → 서명 → 제출까지 이 가이드로 진행합니다.</div>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="hero-stat-num">5단계</span>
+          <span class="hero-stat-label">실행 프로세스</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-num">3차</span>
+          <span class="hero-stat-label">단계별 훈련 기록</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="required-card">
+      <div class="required-card-header">
+        <span>&#9888;&#65039;</span>
+        제출 전 반드시 채워야 하는 항목
+      </div>
+      <div class="required-card-body">
+        <p>아래 항목이 비어 있으면 제출되지 않고, 승인 단계에서 반려됩니다.</p>
+        <ul class="req-list">
+          <li><span class="req-icon">&#9745;&#65039;</span>훈련 일시 · 훈련 책임자</li>
+          <li><span class="req-icon">&#9745;&#65039;</span>집결지(안전 집결·구급차 인계 장소)</li>
+          <li><span class="req-icon">&#9745;&#65039;</span>참여대상자 등록</li>
+          <li><span class="req-icon">&#9745;&#65039;</span>비상대응 역할 7개 · 연락망</li>
+          <li><span class="req-icon">&#9745;&#65039;</span>1·2·3차 실행기록 전항목 체크</li>
+          <li><span class="req-icon">&#9745;&#65039;</span>단계별 증빙 사진</li>
+          <li><span class="req-icon">&#9745;&#65039;</span>직원 참여 전자서명</li>
+          <li><span class="req-icon">&#9745;&#65039;</span>관리감독자(점장) 전자서명</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="info-box warn">
+      <span class="ib-icon">&#9888;&#65039;</span>
+      <div><strong>반기 1회 이상 실시</strong> — 중대재해처벌법 시행령 제4조 제8호에 따라 급박한 위험 대비 매뉴얼을 마련하고 반기 1회 이상 점검해야 합니다.</div>
+    </div>
+
+    <div class="section-eyebrow">QUICK MENU</div>
+    <div class="section-title">무엇을 확인하시겠어요?</div>
+    <div class="section-desc">필요한 메뉴를 선택해주세요.</div>
+
+    <div class="menu-grid">
+      <div class="menu-card" onclick="goPage('login')">
+        <div class="menu-card-icon">&#128273;</div>
+        <div class="menu-card-title">접속 방법</div>
+        <div class="menu-card-desc">QR·PC 접속부터<br>로그인까지</div>
+      </div>
+      <div class="menu-card" onclick="goPage('guide')">
+        <div class="menu-card-icon">&#128203;</div>
+        <div class="menu-card-title">훈련 실행</div>
+        <div class="menu-card-desc">5단계 훈련<br>실행 가이드</div>
+      </div>
+      <div class="menu-card" onclick="goPage('approval')">
+        <div class="menu-card-icon">&#9989;</div>
+        <div class="menu-card-title">제출·승인</div>
+        <div class="menu-card-desc">제출·승인 흐름<br>반려 시 대응</div>
+      </div>
+      <div class="menu-card" onclick="goPage('faq')">
+        <div class="menu-card-icon">&#10067;</div>
+        <div class="menu-card-title">FAQ</div>
+        <div class="menu-card-desc">자주 묻는 질문<br>빠른 답변</div>
+      </div>
+    </div>
+
+    <div class="notice-collapsible" onclick="this.classList.toggle('open')">
+      <div class="notice-header">
+        <span class="n-icon">&#128165;</span>
+        이번 반기 훈련 주제 — CPR·응급환자 대응
+        <span class="n-arrow">&#9660;</span>
+      </div>
+      <div class="notice-body"><div class="notice-body-inner">
+        <ul>
+          <li><strong>상반기</strong> — 화재 진화 및 대피 훈련</li>
+          <li><strong>하반기</strong> — CPR·응급환자 대응 훈련 (심정지, 뇌졸중, 기도폐쇄, 가슴통증, 경련·실신, 아나필락시스, 중증 출혈 중 선택)</li>
+        </ul>
+        <div class="info-box info mt-8">
+          <span class="ib-icon">&#128161;</span>
+          <div>하반기에 앱에 접속하면 <strong>CPR·응급환자 훈련 화면으로 자동 전환</strong>됩니다. 이미 화재훈련 증빙을 올린 기록은 그대로 보존됩니다.</div>
+        </div>
+        <div class="info-box danger mt-8" style="font-size:12px">
+          <span class="ib-icon">&#128680;</span>
+          <div>훈련은 <strong>모의 훈련</strong>입니다. 사람에게 실제 가슴압박·복부 밀어올리기·AED 충격을 시행하지 마세요. 마네킹 또는 쿠션, 훈련용 AED를 사용합니다.</div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="notice-collapsible" onclick="this.classList.toggle('open')">
+      <div class="notice-header">
+        <span class="n-icon">&#128214;</span>
+        용어 풀이 — CPR · AED · TBM · QR
+        <span class="n-arrow">&#9660;</span>
+      </div>
+      <div class="notice-body"><div class="notice-body-inner">
+        <ul class="glossary">
+          <li>
+            <span class="glossary-term">CPR</span><span class="glossary-read">(씨피알)</span>
+            <div class="glossary-mean">심폐소생술 · Cardiopulmonary Resuscitation</div>
+            <div class="glossary-use">심장이 멈춘 사람에게 가슴압박을 해서 뇌로 피를 계속 보내는 응급처치. 하반기 훈련의 핵심 주제입니다.</div>
+          </li>
+          <li>
+            <span class="glossary-term">AED</span><span class="glossary-read">(에이이디)</span>
+            <div class="glossary-mean">자동심장충격기 · Automated External Defibrillator</div>
+            <div class="glossary-use">패드를 붙이면 심장 리듬을 스스로 분석해 필요할 때 전기충격을 주는 장비. 전원을 켜고 음성 안내를 따릅니다.</div>
+          </li>
+          <li>
+            <span class="glossary-term">TBM</span><span class="glossary-read">(티비엠)</span>
+            <div class="glossary-mean">작업 전 안전점검 회의 · Tool Box Meeting</div>
+            <div class="glossary-use">근무 시작 전 짧게 모여 위험요인과 안전수칙을 공유하는 시간. 사전교육을 이 시간에 진행합니다.</div>
+          </li>
+          <li>
+            <span class="glossary-term">QR</span><span class="glossary-read">(큐알)</span>
+            <div class="glossary-mean">QR 코드 · Quick Response Code</div>
+            <div class="glossary-use">휴대폰 카메라로 찍으면 앱이나 서명 링크로 바로 연결되는 사각형 코드. 직원 서명을 받을 때 씁니다.</div>
+          </li>
+        </ul>
+      </div></div>
+    </div>
+
+    <div class="notice-collapsible" onclick="this.classList.toggle('open')">
+      <div class="notice-header">
+        <span class="n-icon">&#128220;</span>
+        실행 근거 — 왜 해야 하나요
+        <span class="n-arrow">&#9660;</span>
+      </div>
+      <div class="notice-body"><div class="notice-body-inner">
+        <table class="penalty-table">
+          <tr><th>근거</th><th>내용</th></tr>
+          <tr><td>중대재해처벌법 시행령 제4조 제8호</td><td>급박한 위험 대비 매뉴얼 마련, <strong>반기 1회 이상 점검</strong></td></tr>
+          <tr><td>산업안전보건법 제51·52조</td><td>급박한 위험 시 사업주·근로자의 <strong>작업중지 및 대피</strong></td></tr>
+          <tr><td>산업안전보건기준에 관한 규칙</td><td>비상시 대피·연락 체계 등 <strong>비상조치 사항</strong></td></tr>
+        </table>
+        <p class="mt-8" style="font-size:12px;color:var(--c-text-muted)"><strong>핵심 실행 의무 :</strong> ① 매뉴얼 → ② 훈련 실시 → ③ 전 직원 공유 → ④ 증빙 기록</p>
+        <div class="info-box danger mt-16" style="font-size:12px">
+          <span class="ib-icon">&#128680;</span>
+          <div>감독 시 직원이 "훈련을 받은 적 없다"고 답하면 기록만으로는 인정받기 어렵습니다. 반드시 <strong>전 직원이 실제로 참여</strong>하고 서명해야 합니다.</div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="qr-card">
+      <img src="assets/qr-code.png" alt="가이드 앱 접속 QR 코드" class="qr-img" onerror="this.style.display='none'">
+      <div class="qr-info">
+        <div class="qr-title">모바일로 열기</div>
+        <div class="qr-desc">카메라로 QR을 스캔하면 이 가이드를 휴대폰에서 바로 열 수 있습니다.</div>
+        <div class="qr-url" id="qrUrl">sky5224122-jpg.github.io/daiso-emergency-training-guide</div>
+        <button class="qr-copy-btn" onclick="copyGuideUrl()" id="qrCopyBtn">주소 복사</button>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <strong>안전보건팀</strong> · 인사총무본부 기업문화관리부문<br>
+      2026년 하반기 매장 비상대응훈련 실행 가이드
+    </div>
+  </div>
+
+  <!-- ═══ 접속 방법 ═══ -->
+  <div class="page" id="page-login">
+    <button class="back-btn" onclick="goPage('home')">&larr; 메인으로</button>
+
+    <div class="section-eyebrow">STEP 01</div>
+    <div class="section-title">접속 방법</div>
+    <div class="section-desc">QR 스캔 또는 PC 주소로 접속하여 로그인합니다.</div>
+
+    <div class="step-detail">
+      <div class="step-detail-header">
+        <div class="step-num">1</div>
+        <div class="step-detail-title">앱 접속</div>
+      </div>
+      <div class="step-detail-body">
+        <ul>
+          <li><strong>PC</strong> — 아래 주소를 브라우저에 입력<br>
+            <code style="background:var(--c-surface-alt);padding:5px 10px;border-radius:5px;font-size:13px;word-break:break-all;display:inline-block;margin-top:4px">https://asung-daiso-emergency-training.web.app/</code></li>
+          <li><strong>모바일</strong> — 로그인 화면의 QR 코드를 휴대폰 카메라로 스캔</li>
+        </ul>
+        <div class="info-box info mt-8">
+          <span class="ib-icon">&#128161;</span>
+          <div>훈련계획·실행기록은 입력 항목이 많아 <strong>PC 작성을 권장</strong>합니다. 현장 사진 첨부와 직원 서명은 모바일이 편리합니다.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-detail">
+      <div class="step-detail-header">
+        <div class="step-num">2</div>
+        <div class="step-detail-title">로그인</div>
+      </div>
+      <div class="step-detail-body">
+        <ul>
+          <li><strong>아이디</strong> — 매장 계정은 <code style="background:var(--c-surface-alt);padding:3px 8px;border-radius:5px">store-매장번호</code> 형식입니다 (예: store-10788)<br>
+            <span style="font-size:12px;color:var(--c-text-muted)">위험성평가 앱과 같은 계정 체계를 사용합니다. 계정은 별도 배포 파일 참조</span></li>
+          <li><strong>비밀번호</strong> — 배포된 매장 비밀번호를 입력합니다</li>
+          <li>비밀번호 입력칸 오른쪽 <strong>눈 모양 버튼</strong>으로 입력값을 확인할 수 있습니다</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step-detail">
+      <div class="step-detail-header">
+        <div class="step-num">3</div>
+        <div class="step-detail-title">화면 구성 익히기</div>
+      </div>
+      <div class="step-detail-body">
+        <ul>
+          <li><strong>화면 위쪽 매장 배지</strong> — 지금 작성 중인 매장과 연도·반기가 항상 표시됩니다. 다른 매장이 떠 있으면 작성하지 마세요.</li>
+          <li><strong>상단 메뉴</strong> — 대시보드 / 훈련계획 / 실행기록 / 전자서명 / 서명안내(QR) / 승인·참조 / 교육자료 / 결과취합</li>
+          <li><strong>임시 저장</strong> — 다른 화면으로 넘어가기 전에 눌러 주세요.</li>
+        </ul>
+        <div class="info-box warn mt-8">
+          <span class="ib-icon">&#9888;&#65039;</span>
+          <div>'중처법 현황' 메뉴는 <strong>안전보건팀 전용</strong>입니다. 매장 계정에는 보이지 않는 것이 정상입니다.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <div></div>
+      <button class="step-nav-btn next" onclick="goPage('guide')">
+        훈련 실행 가이드
+        <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══ GUIDE (5-step) ═══ -->
+  <div class="page" id="page-guide">
+    <button class="back-btn" onclick="goPage('home')">&larr; 메인으로</button>
+
+    <div class="section-eyebrow">5-STEP PROCESS</div>
+    <div class="section-title">훈련 실행 가이드</div>
+    <div class="section-desc">아래 5단계를 순서대로 진행합니다. 각 단계를 눌러 상세 안내를 확인하세요.</div>
+
+    <div class="step-flow" id="stepFlow">
+      <span class="step-chip active" onclick="showStep(1)">① 훈련계획</span>
+      <span class="step-arrow">&#8250;</span>
+      <span class="step-chip" onclick="showStep(2)">② 사전교육</span>
+      <span class="step-arrow">&#8250;</span>
+      <span class="step-chip" onclick="showStep(3)">③ 실행기록</span>
+      <span class="step-arrow">&#8250;</span>
+      <span class="step-chip" onclick="showStep(4)">④ 전자서명</span>
+      <span class="step-arrow">&#8250;</span>
+      <span class="step-chip" onclick="showStep(5)">⑤ 제출</span>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="step-content" id="step-1">
+      <div class="step-detail">
+        <div class="step-detail-header">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-detail-title">훈련계획 작성</div>
+            <div style="font-size:12px;color:var(--c-text-muted);margin-top:2px">훈련 전 가장 먼저 채우는 화면</div>
+          </div>
+        </div>
+        <div class="step-detail-body">
+          <div class="info-box info">
+            <span class="ib-icon">&#128161;</span>
+            <div>훈련계획 맨 위의 <strong>'한눈에 보는 훈련 흐름도'</strong>를 먼저 보세요. 대응 순서 → 역할 분담 → 꼭 알아둘 정보 → 당일 순서가 한 장에 정리되어 있고, <strong>인쇄</strong>해서 현장에 들고 갈 수 있습니다.</div>
+          </div>
+          <h4 style="font-size:14px;font-weight:700;margin:14px 0 8px">입력 항목</h4>
+          <ul>
+            <li><strong>훈련 일시</strong> — 실제 훈련을 실시할(한) 날짜와 시간</li>
+            <li><strong>훈련 책임자</strong> — 점장 또는 관리감독자 이름</li>
+            <li><strong>담당 파트장</strong> — 소속 파트장 이름</li>
+            <li><strong>집결지</strong> <span class="badge badge-red">필수</span> — 하반기에는 <strong>안전 집결·구급차 인계 장소</strong>로 표시됩니다. "건물 전면 공터", "지하주차장 입구"처럼 구체적으로 적습니다.</li>
+            <li><strong>참여대상자</strong> — 근무 직원 이름을 한 명씩 추가합니다. <strong>1인 근무 매장도 반드시 등록</strong>합니다.</li>
+          </ul>
+          <h4 style="font-size:14px;font-weight:700;margin:16px 0 8px">비상대응 역할 7가지</h4>
+          <ul>
+            <li>최초 발견·현장안전 / 119 신고 담당</li>
+            <li>CPR 1차 담당 / CPR 교대 담당</li>
+            <li>AED 운반 담당 / 고객·현장 통제</li>
+            <li>구급차 유도·인계</li>
+          </ul>
+          <div class="info-box warn mt-8">
+            <span class="ib-icon">&#9888;&#65039;</span>
+            <div>역할이 비어 있으면 흐름도에 경고가 표시되고 제출이 막힙니다. 인원이 적으면 <strong>한 사람이 두 역할</strong>을 맡아도 되지만, 이름은 반드시 적어야 합니다.</div>
+          </div>
+          <h4 style="font-size:14px;font-weight:700;margin:16px 0 8px">연락망</h4>
+          <ul>
+            <li>관할 소방서 / 관할 경찰서·지구대</li>
+            <li><strong>인근 응급의료기관 이름과 전화번호</strong> — 하반기 필수</li>
+            <li><strong>AED 설치 위치</strong>를 직접 가서 확인하고 적어둡니다</li>
+          </ul>
+        </div>
+      </div>
+      <div class="step-nav">
+        <div style="flex:1"></div>
+        <button class="step-nav-btn next" onclick="showStep(2)">다음: 사전교육 <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step-content" id="step-2" style="display:none">
+      <div class="step-detail">
+        <div class="step-detail-header">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-detail-title">사전교육 실시</div>
+            <div style="font-size:12px;color:var(--c-text-muted);margin-top:2px">훈련 당일 또는 직전에 전 직원 교육</div>
+          </div>
+        </div>
+        <div class="step-detail-body">
+          <div class="info-box success">
+            <span class="ib-icon">&#9989;</span>
+            <div><strong>교육자료</strong> 메뉴를 열면 이번 반기에 맞는 <strong>필수 교육자료</strong>가 자동으로 표시됩니다. '열기' 또는 '인쇄'를 눌러 바로 사용하세요.</div>
+          </div>
+          <h4 style="font-size:14px;font-weight:700;margin:14px 0 8px">하반기 필수 교육자료</h4>
+          <ul>
+            <li><strong>CPR·응급환자 직원 교육자료</strong> — 7단계 대응 흐름, 가슴압박·AED 요령, 상황별 행동, 역할 분담표, <strong>점장용 5분 교육 대본</strong>, 확인 퀴즈 (A4 3장 인쇄)</li>
+            <li><strong>심폐소생술 교육자료(PDF)</strong> — 사내 교육 슬라이드</li>
+            <li><strong>CPR·응급환자 훈련 체크리스트</strong> — 훈련 당일 기록용 인쇄 양식</li>
+            <li><strong>질병관리청 심폐소생술 안내</strong> — 공식 출처</li>
+          </ul>
+          <h4 style="font-size:14px;font-weight:700;margin:16px 0 8px">진행 방법</h4>
+          <ul>
+            <li>TBM(조회) 시간이나 개점 전 짧은 집합교육으로 진행합니다</li>
+            <li>교육자료의 <strong>5분 대본</strong>을 그대로 읽으면 됩니다</li>
+            <li>교육 장면을 <strong>사진으로 남깁니다</strong> — 실행기록 증빙에 사용</li>
+            <li>교대 근무로 빠진 직원은 출근일에 교육하고 서명을 받습니다</li>
+          </ul>
+          <div class="info-box danger mt-8">
+            <span class="ib-icon">&#128680;</span>
+            <div>사람에게 실제로 강한 가슴압박·복부 밀어올리기·AED 충격을 하지 않습니다. <strong>마네킹 또는 쿠션, 훈련용 AED</strong>를 사용합니다.</div>
+          </div>
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="step-nav-btn prev" onclick="showStep(1)"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> 이전</button>
+        <button class="step-nav-btn next" onclick="showStep(3)">다음: 실행기록 <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step-content" id="step-3" style="display:none">
+      <div class="step-detail">
+        <div class="step-detail-header">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-detail-title">훈련 실행 및 기록</div>
+            <div style="font-size:12px;color:var(--c-text-muted);margin-top:2px">1·2·3차 단계별로 실시하고 사진을 남깁니다</div>
+          </div>
+        </div>
+        <div class="step-detail-body">
+          <h4 style="font-size:14px;font-weight:700;margin:4px 0 8px">하반기(심정지) 3단계</h4>
+          <ul>
+            <li><strong>1차</strong> — 현장안전·반응·호흡 확인 및 119 신고<br>
+              <span style="font-size:12px;color:var(--c-text-muted)">증빙: 현장안전 확인, 반응·호흡 확인, 119 신고 역할 수행 사진</span></li>
+            <li><strong>2차</strong> — 가슴압박 및 AED 적용<br>
+              <span style="font-size:12px;color:var(--c-text-muted)">증빙: 가슴압박 자세, AED 패드 부착·안전 확인 사진</span></li>
+            <li><strong>3차</strong> — 교대 지속·현장통제·구급대 인계<br>
+              <span style="font-size:12px;color:var(--c-text-muted)">증빙: CPR 교대, 현장통제, 구급대 인계 모의훈련 사진</span></li>
+          </ul>
+          <div class="info-box info mt-8">
+            <span class="ib-icon">&#128161;</span>
+            <div>상반기(화재)는 ① 소화기 사용방법 교육/훈련 → ② 대피 훈련 → ③ 집결지 인원파악 및 신고 순서입니다.</div>
+          </div>
+          <h4 style="font-size:14px;font-weight:700;margin:16px 0 8px">기록할 항목</h4>
+          <ul>
+            <li>단계마다 <strong>교육 / 훈련 체크</strong>를 반드시 선택합니다 (둘 다 비면 제출 불가)</li>
+            <li><strong>증빙 사진</strong>을 단계별로 첨부합니다</li>
+            <li><strong>집결지 인원파악 결과</strong>, <strong>119 신고 시각</strong></li>
+            <li><strong>조치 타임라인</strong> — 위험 인지 / 작업중지 결정·명령 / 대피 개시 등 시각과 책임자</li>
+            <li><strong>재해자 구호조치</strong>, <strong>추가피해 방지 통제조치</strong>(책임자·시각·사진)</li>
+          </ul>
+          <div class="info-box warn mt-8">
+            <span class="ib-icon">&#9888;&#65039;</span>
+            <div>사진은 <strong>사람 얼굴보다 행동이 보이게</strong> 찍습니다. 실제 환자가 있었던 경우 이름·질환 등 개인정보는 기록하지 않습니다.</div>
+          </div>
+          <div class="info-box danger mt-8">
+            <span class="ib-icon">&#128190;</span>
+            <div>항목을 입력한 뒤 <strong>'임시 저장'</strong>을 누르고 다음 화면으로 넘어가세요. 저장하지 않으면 입력 내용이 사라질 수 있습니다.</div>
+          </div>
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="step-nav-btn prev" onclick="showStep(2)"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> 이전</button>
+        <button class="step-nav-btn next" onclick="showStep(4)">다음: 전자서명 <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step-content" id="step-4" style="display:none">
+      <div class="step-detail">
+        <div class="step-detail-header">
+          <div class="step-num">4</div>
+          <div>
+            <div class="step-detail-title">전자서명 받기</div>
+            <div style="font-size:12px;color:var(--c-text-muted);margin-top:2px">직원 참여 서명 + 관리감독자 서명</div>
+          </div>
+        </div>
+        <div class="step-detail-body">
+          <h4 style="font-size:14px;font-weight:700;margin:4px 0 8px">① 직원 참여 서명</h4>
+          <ul>
+            <li><strong>서명안내(QR)</strong> 메뉴에서 QR 코드 또는 서명 링크를 띄웁니다</li>
+            <li>직원이 휴대폰으로 QR을 찍거나, 링크를 <strong>단체 대화방에 공유</strong>합니다</li>
+            <li>직원은 교육 내용을 확인한 뒤 손가락으로 서명하고 제출합니다</li>
+            <li>제출된 서명은 <strong>전자서명</strong> 화면에서 실시간으로 확인됩니다</li>
+          </ul>
+          <h4 style="font-size:14px;font-weight:700;margin:16px 0 8px">② 훈련결과 공유 서명</h4>
+          <ul>
+            <li>훈련 결과를 직원에게 공유했다는 확인 서명입니다</li>
+            <li>같은 방식으로 QR·링크를 배포합니다</li>
+          </ul>
+          <h4 style="font-size:14px;font-weight:700;margin:16px 0 8px">③ 관리감독자(점장) 서명</h4>
+          <ul>
+            <li>전자서명 화면 아래에서 점장이 직접 서명합니다 <span class="badge badge-red">필수</span></li>
+            <li>서명 상태가 "서명 완료"로 바뀌는지 확인합니다</li>
+          </ul>
+          <div class="info-box info mt-8">
+            <span class="ib-icon">&#128241;</span>
+            <div>휴대폰을 쓰기 어려운 직원은 <strong>종이 서명록</strong>에 자필 서명 후 사진으로 첨부해도 됩니다. 단, 참여 서명이 전자·종이 중 <strong>최소 1개</strong>는 반드시 등록되어야 합니다.</div>
+          </div>
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="step-nav-btn prev" onclick="showStep(3)"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> 이전</button>
+        <button class="step-nav-btn next" onclick="showStep(5)">다음: 제출 <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="step-content" id="step-5" style="display:none">
+      <div class="step-detail">
+        <div class="step-detail-header">
+          <div class="step-num">5</div>
+          <div>
+            <div class="step-detail-title">제출하기</div>
+            <div style="font-size:12px;color:var(--c-text-muted);margin-top:2px">빠진 항목을 확인하고 최종 제출</div>
+          </div>
+        </div>
+        <div class="step-detail-body">
+          <ul>
+            <li>화면 위쪽 <strong>작성 진행 단계 표시줄</strong>에서 현재 진행률과 <strong>빠진 필수 항목</strong>을 확인합니다</li>
+            <li>빠진 항목을 누르면 해당 입력 칸으로 바로 이동합니다</li>
+            <li>모두 채운 뒤 <strong>승인/참조</strong> 화면에서 제출합니다</li>
+          </ul>
+          <div class="info-box warn mt-8">
+            <span class="ib-icon">&#9888;&#65039;</span>
+            <div>제출 후에는 매장에서 수정할 수 없습니다. 수정이 필요하면 <strong>철회</strong>하거나 안전보건팀에 요청하세요.</div>
+          </div>
+          <div class="info-box success mt-8">
+            <span class="ib-icon">&#9989;</span>
+            <div>제출이 끝나면 <strong>제출·승인</strong> 화면에서 승인 흐름과 반려 시 대응 방법을 확인하세요.</div>
+          </div>
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="step-nav-btn prev" onclick="showStep(4)"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> 이전</button>
+        <button class="step-nav-btn next" onclick="goPage('approval')">제출·승인 보기 <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 제출·승인 ═══ -->
+  <div class="page" id="page-approval">
+    <button class="back-btn" onclick="goPage('home')">&larr; 메인으로</button>
+
+    <div class="section-eyebrow">APPROVAL</div>
+    <div class="section-title">제출·승인 흐름</div>
+    <div class="section-desc">점장이 제출하면 안전보건팀이 검토 후 최종 승인합니다.</div>
+
+    <div class="card">
+      <div class="approval-flow">
+        <div class="approval-step">
+          <div class="approval-dot blue">&#128221;</div>
+          <div class="approval-content">
+            <h4>1. 점장 작성·제출</h4>
+            <p>훈련계획·실행기록·서명을 모두 채운 뒤 제출합니다. (상태: 제출됨)</p>
+          </div>
+        </div>
+        <div class="approval-step">
+          <div class="approval-dot amber">&#128269;</div>
+          <div class="approval-content">
+            <h4>2. 안전보건팀 검토</h4>
+            <p>필수 항목과 증빙을 확인합니다. 미흡하면 반려 또는 수정 지시를 보냅니다.</p>
+          </div>
+        </div>
+        <div class="approval-step">
+          <div class="approval-dot green">&#9989;</div>
+          <div class="approval-content">
+            <h4>3. 최종 승인</h4>
+            <p>승인 완료 후 결과를 출력·보관합니다. 영업팀장·부서장·부문장은 참조 확인만 합니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title" style="font-size:18px;margin-top:24px">승인 시 확인하는 5가지</div>
+    <div class="section-desc">아래 항목이 하나라도 비면 반려됩니다.</div>
+    <table class="penalty-table">
+      <tr><th>확인 항목</th><th>어디서 입력</th></tr>
+      <tr><td>집결지 지정</td><td>훈련계획</td></tr>
+      <tr><td>참여대상자 등록</td><td>훈련계획</td></tr>
+      <tr><td>실행기록 전항목 체크</td><td>실행기록</td></tr>
+      <tr><td>관리감독자 서명</td><td>전자서명</td></tr>
+      <tr><td>직원 참여 서명</td><td>전자서명 / 서명안내(QR)</td></tr>
+    </table>
+
+    <div class="section-title" style="font-size:18px;margin-top:24px">상태별 대응</div>
+    <div class="card">
+      <ul style="padding-left:18px">
+        <li style="margin-bottom:8px"><span class="badge badge-amber">반려</span> &nbsp;사유를 확인하고 보완한 뒤 다시 제출합니다.</li>
+        <li style="margin-bottom:8px"><span class="badge badge-amber">수정 지시</span> &nbsp;지시 내용만 고쳐서 다시 제출합니다.</li>
+        <li style="margin-bottom:8px"><span class="badge badge-blue">철회</span> &nbsp;매장이 스스로 제출을 취소하고 다시 작성합니다.</li>
+        <li><span class="badge badge-green">최종 승인</span> &nbsp;결과를 출력해 매장에 보관합니다.</li>
+      </ul>
+    </div>
+
+    <div class="info-box info mt-16">
+      <span class="ib-icon">&#128196;</span>
+      <div>승인 후 <strong>결과취합</strong> 화면에서 훈련 결과를 출력할 수 있습니다. 출력물은 매장에 비치하고 증빙으로 보관합니다.</div>
+    </div>
+
+    <div class="step-nav">
+      <button class="step-nav-btn prev" onclick="goPage('guide')"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> 실행 가이드</button>
+      <button class="step-nav-btn next" onclick="goPage('faq')">자주 묻는 질문 <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+    </div>
+  </div>
+
+  <!-- ═══ FAQ ═══ -->
+  <div class="page" id="page-faq">
+    <button class="back-btn" onclick="goPage('home')">&larr; 메인으로</button>
+    <div class="section-eyebrow">FAQ</div>
+    <div class="section-title">자주 묻는 질문</div>
+    <div class="section-desc">현장에서 가장 많이 나오는 질문을 모았습니다.</div>
+    <div id="faqList"></div>
+  </div>
+
+  <!-- ═══ SEARCH ═══ -->
+  <div class="page" id="page-search">
+    <button class="back-btn" onclick="goPage('home')">&larr; 메인으로</button>
+    <div class="section-eyebrow">SEARCH</div>
+    <div class="section-title">가이드 검색</div>
+    <div class="section-desc">궁금한 단어를 입력하면 관련 안내를 찾아줍니다.</div>
+    <div class="search-wrap">
+      <span class="search-icon">&#128269;</span>
+      <input type="text" class="search-input" id="searchInput" placeholder="예: 서명, 집결지, AED, 반려..." oninput="doSearch(this.value)">
+    </div>
+    <div id="searchTags" style="margin-bottom:16px">
+      <span class="search-tag" onclick="tagSearch('서명')">서명</span>
+      <span class="search-tag" onclick="tagSearch('집결지')">집결지</span>
+      <span class="search-tag" onclick="tagSearch('AED')">AED</span>
+      <span class="search-tag" onclick="tagSearch('사진')">사진</span>
+      <span class="search-tag" onclick="tagSearch('교육자료')">교육자료</span>
+      <span class="search-tag" onclick="tagSearch('반려')">반려</span>
+      <span class="search-tag" onclick="tagSearch('임시 저장')">임시 저장</span>
+    </div>
+    <div id="searchResults"></div>
+    <div id="searchEmpty">검색어를 입력하거나 위 태그를 눌러보세요.</div>
+  </div>
+
+  <div id="lightbox" onclick="closeLightbox()">
+    <img id="lightboxImg" src="" alt="화면 확대보기">
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn active" id="nav-home" onclick="goPage('home')">
+      <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/></svg>
+      <span>메인</span>
+    </button>
+    <button class="nav-btn" id="nav-guide" onclick="goPage('guide')">
+      <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+      <span>실행가이드</span>
+    </button>
+    <button class="nav-btn" id="nav-faq" onclick="goPage('faq')">
+      <svg viewBox="0 0 24 24"><path d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <span>FAQ</span>
+    </button>
+    <button class="nav-btn" id="nav-search" onclick="goPage('search')">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <span>검색</span>
+    </button>
+  </nav>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+// ═══ NAVIGATION ═══
+const pageMap = {home:'메인',login:'접속 방법',guide:'훈련 실행 가이드',approval:'제출·승인',faq:'FAQ',search:'검색'};
+const navMap = {home:'nav-home',guide:'nav-guide',faq:'nav-faq',search:'nav-search',login:'nav-home',approval:'nav-home'};
+
+function goPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const page = $('page-' + id);
+  if (page) page.classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const navId = navMap[id];
+  if (navId) $(navId).classList.add('active');
+  document.querySelectorAll('.pc-nav-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.page === id);
+  });
+  $('topBarTitle').textContent = pageMap[id] || '실행 가이드';
+  window.scrollTo({top: 0, behavior: 'instant'});
+}
+
+// ═══ STEP FLOW ═══
+let currentStep = 1;
+function showStep(n) {
+  currentStep = n;
+  for (let i = 1; i <= 5; i++) {
+    const el = $('step-' + i);
+    if (el) el.style.display = i === n ? 'block' : 'none';
+  }
+  document.querySelectorAll('#stepFlow .step-chip').forEach((c, idx) => {
+    c.classList.remove('active', 'done');
+    if (idx + 1 === n) c.classList.add('active');
+    else if (idx + 1 < n) c.classList.add('done');
+  });
+  const activeChip = document.querySelector('#stepFlow .step-chip.active');
+  if (activeChip) activeChip.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+  window.scrollTo({top: document.querySelector('#stepFlow').offsetTop - 70, behavior:'smooth'});
+}
+
+// ═══ SIDE MENU ═══
+function openSide() { $('sideMenu').classList.add('open'); }
+function closeSide() { $('sideMenu').classList.remove('open'); }
+
+function updateMobileMenu() {
+  const btn = $('mobileMenuBtn');
+  if (btn) btn.style.display = window.innerWidth < 768 ? 'flex' : 'none';
+}
+updateMobileMenu();
+window.addEventListener('resize', updateMobileMenu);
+
+// ═══ LIGHTBOX ═══
+function openLightbox(src) { $('lightboxImg').src = src; $('lightbox').classList.add('open'); }
+function closeLightbox() { $('lightbox').classList.remove('open'); }
+
+// ═══ QR COPY ═══
+function copyGuideUrl() {
+  const url = 'https://sky5224122-jpg.github.io/daiso-emergency-training-guide/';
+  const btn = $('qrCopyBtn');
+  const done = () => {
+    const original = btn.textContent;
+    btn.textContent = '복사됨!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = original; btn.classList.remove('copied'); }, 1500);
+  };
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(done).catch(() => fallbackCopy(url, done));
+  } else {
+    fallbackCopy(url, done);
+  }
+}
+function fallbackCopy(text, cb) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); cb(); } catch (e) {}
+  document.body.removeChild(ta);
+}
+
+// ═══ FAQ ═══
+const faqData = [
+  {q:'하반기인데 화재훈련 화면이 떠요.', a:'2026년 하반기에 접속하면 CPR·응급환자 훈련으로 자동 전환됩니다. 다만 이미 화재훈련 사진·서명 등 증빙을 올린 기록은 보존을 위해 그대로 유지됩니다. 하반기 CPR 훈련을 새로 해야 하는지는 안전보건팀 안내를 따르세요.'},
+  {q:'집결지에 무엇을 적나요?', a:'상반기(화재)는 대피 후 모이는 장소를, 하반기(CPR·응급환자)는 안전 집결 및 구급차가 들어와 환자를 인계받을 장소를 적습니다. "건물 전면 공터", "지하주차장 입구"처럼 구체적으로 적어야 합니다.'},
+  {q:'서명은 몇 가지를 받아야 하나요?', a:'직원 참여 서명과 관리감독자(점장) 서명이 필수입니다. 훈련결과 공유 서명도 함께 받아 두는 것이 좋습니다. 참여 서명은 전자서명 또는 종이 서명록 사진 중 최소 1개가 반드시 있어야 합니다.'},
+  {q:'직원이 서명 링크를 못 받았어요.', a:'서명안내(QR) 메뉴에서 QR 코드를 화면에 띄워 직원이 휴대폰 카메라로 바로 찍게 하거나, 링크를 단체 대화방에 다시 공유하세요.'},
+  {q:'실제로 가슴압박을 해봐야 하나요?', a:'아닙니다. 사람에게 실제 가슴압박·복부 밀어올리기·AED 충격을 하면 다칠 수 있습니다. 마네킹이나 쿠션, 훈련용 AED로 자세와 위치만 익힙니다.'},
+  {q:'사진은 몇 장을 올려야 하나요?', a:'1·2·3차 단계마다 해당 행동이 보이는 사진을 최소 1장씩 올립니다. 교육 장면 사진도 함께 올리면 좋습니다. 얼굴보다 행동이 드러나게 찍으세요.'},
+  {q:'1인 근무 매장인데도 해야 하나요?', a:'네. 1인 근무 매장도 훈련 대상입니다. 참여대상자에 본인을 등록하고, 역할은 한 사람이 여러 개를 맡는 것으로 적되 119 신고와 AED 위치 확인은 반드시 포함합니다.'},
+  {q:'작성하다가 내용이 사라졌어요.', a:'다른 화면으로 넘어가기 전에 상단의 임시 저장 버튼을 눌러야 합니다. 저장하지 않고 이동하거나 브라우저를 닫으면 입력 내용이 유실될 수 있습니다.'},
+  {q:'제출한 뒤 수정하고 싶어요.', a:'제출 후에는 매장에서 바로 수정할 수 없습니다. 승인 전이라면 철회한 뒤 수정해 다시 제출하고, 이미 처리 중이면 안전보건팀에 수정 지시를 요청하세요.'},
+  {q:'반려되었습니다. 어떻게 하나요?', a:'반려 사유를 확인하고 해당 항목만 보완한 뒤 다시 제출하면 됩니다. 가장 흔한 반려 사유는 집결지 미작성, 참여대상자 미등록, 실행기록 미체크, 서명 누락입니다.'},
+  {q:'교육자료는 어디에 있나요?', a:'교육자료 메뉴 맨 위 필수 교육자료 칸에 이번 반기 자료가 자동으로 표시됩니다. 열기 또는 인쇄 버튼으로 바로 사용할 수 있고, 매장에서 쓰는 자료는 아래쪽에 링크로 추가할 수 있습니다.'},
+  {q:'중처법 현황 메뉴가 안 보여요.', a:'중처법 현황은 안전보건팀 전용 메뉴입니다. 매장 계정에 보이지 않는 것이 정상입니다.'},
+  {q:'지금 어느 매장을 작성 중인지 모르겠어요.', a:'화면 위쪽 제목 아래에 현재 매장 배지가 항상 표시됩니다. 매장명·매장코드·소속과 연도·반기를 확인한 뒤 작성하세요.'},
+  {q:'AED가 매장에 없습니다.', a:'건물 공용부나 인근 시설의 AED 위치를 확인해 훈련계획에 적어둡니다. AED 위치 검색 앱이나 지자체 안내로 가장 가까운 설치 장소를 찾을 수 있습니다.'}
+];
+function renderFaq() {
+  $('faqList').innerHTML = faqData.map((f, i) =>
+    '<div class="faq-item" onclick="this.classList.toggle(\'open\')">' +
+      '<div class="faq-q"><span class="q-badge">Q' + (i+1) + '</span>' + f.q + '<span class="q-arrow">&#9660;</span></div>' +
+      '<div class="faq-a"><div class="faq-a-inner">' + f.a + '</div></div>' +
+    '</div>').join('');
+}
+
+// ═══ SEARCH ═══
+const searchData = [
+  {title:'앱 접속', text:'https://asung-daiso-emergency-training.web.app 주소로 접속하거나 로그인 화면의 QR 코드를 휴대폰으로 스캔합니다.', page:'login'},
+  {title:'로그인 계정', text:'매장 계정은 store- 뒤에 매장번호 형식입니다. 위험성평가 앱과 같은 계정 체계를 사용합니다.', page:'login'},
+  {title:'현재 매장 확인', text:'모든 화면 위쪽에 현재 매장 배지가 표시됩니다. 매장명, 매장코드, 소속, 연도와 반기를 확인할 수 있습니다.', page:'login'},
+  {title:'훈련 흐름도', text:'훈련계획 맨 위의 한눈에 보는 훈련 흐름도에서 대응 순서, 역할 분담, 연락처, 당일 순서를 한 장으로 확인하고 인쇄할 수 있습니다.', page:'guide'},
+  {title:'집결지', text:'상반기는 대피 집결 장소, 하반기는 안전 집결 및 구급차 인계 장소를 구체적으로 적습니다. 비우면 제출되지 않습니다.', page:'guide'},
+  {title:'참여대상자', text:'근무 직원 이름을 한 명씩 추가합니다. 1인 근무 매장도 반드시 등록해야 합니다.', page:'guide'},
+  {title:'비상대응 역할', text:'최초 발견·현장안전, 119 신고, CPR 1차, CPR 교대, AED 운반, 고객·현장 통제, 구급차 유도·인계 7가지 역할에 이름을 적습니다.', page:'guide'},
+  {title:'AED 위치', text:'AED 설치 위치를 직접 가서 확인하고 훈련계획에 적어둡니다. 매장에 없으면 건물이나 인근 시설의 위치를 확인합니다.', page:'guide'},
+  {title:'교육자료', text:'교육자료 메뉴의 필수 교육자료에서 CPR 직원 교육자료, 심폐소생술 PDF, 훈련 체크리스트를 열거나 인쇄할 수 있습니다.', page:'guide'},
+  {title:'5분 교육 대본', text:'직원 교육자료에 점장용 5분 교육 대본이 들어 있어 그대로 읽으며 사전교육을 진행할 수 있습니다.', page:'guide'},
+  {title:'실행기록 3단계', text:'1차 현장안전·반응·호흡 확인 및 119 신고, 2차 가슴압박 및 AED 적용, 3차 교대 지속·현장통제·구급대 인계 순서로 기록합니다.', page:'guide'},
+  {title:'증빙 사진', text:'1·2·3차 단계마다 행동이 보이는 사진을 첨부합니다. 실제 환자의 개인정보는 기록하지 않습니다.', page:'guide'},
+  {title:'조치 타임라인', text:'위험 인지, 작업중지 결정과 명령, 대피 개시 등 각 시각과 책임자를 기록합니다.', page:'guide'},
+  {title:'임시 저장', text:'다른 화면으로 넘어가기 전에 임시 저장을 눌러야 입력 내용이 유지됩니다.', page:'guide'},
+  {title:'직원 참여 서명', text:'서명안내(QR) 메뉴의 QR 코드나 링크를 직원에게 공유해 휴대폰으로 서명을 받습니다.', page:'guide'},
+  {title:'관리감독자 서명', text:'전자서명 화면에서 점장이 직접 서명합니다. 없으면 제출되지 않습니다.', page:'guide'},
+  {title:'종이 서명록', text:'휴대폰 사용이 어려운 직원은 종이 서명록에 자필 서명 후 사진으로 첨부할 수 있습니다.', page:'guide'},
+  {title:'승인 흐름', text:'점장 제출 후 안전보건팀이 검토하고 최종 승인합니다. 영업팀장, 부서장, 부문장은 참조 확인만 합니다.', page:'approval'},
+  {title:'반려와 수정 지시', text:'반려 사유를 확인해 보완한 뒤 다시 제출합니다. 수정 지시는 지시 내용만 고쳐 제출합니다.', page:'approval'},
+  {title:'철회', text:'승인 전이라면 매장이 제출을 철회하고 내용을 수정해 다시 제출할 수 있습니다.', page:'approval'},
+  {title:'결과 출력', text:'최종 승인 후 결과취합 화면에서 훈련 결과를 출력해 매장에 비치하고 증빙으로 보관합니다.', page:'approval'},
+  {title:'실행 근거', text:'중대재해처벌법 시행령 제4조 제8호에 따라 급박한 위험 대비 매뉴얼을 마련하고 반기 1회 이상 점검해야 합니다.', page:'home'},
+  {title:'모의 훈련 주의', text:'사람에게 실제 가슴압박, 복부 밀어올리기, AED 충격을 하지 않습니다. 마네킹이나 쿠션, 훈련용 AED를 사용합니다.', page:'home'},
+  {title:'용어 풀이', text:'CPR(씨피알)은 심폐소생술, AED(에이이디)는 자동심장충격기, TBM(티비엠)은 작업 전 안전점검 회의, QR(큐알)은 휴대폰으로 찍는 사각형 코드입니다.', page:'home'},
+  {title:'중처법 현황 메뉴', text:'중처법 현황은 안전보건팀 전용 메뉴로 매장 계정에는 보이지 않습니다.', page:'login'}
+];
+
+function tagSearch(t) {
+  $('searchInput').value = t;
+  doSearch(t);
+}
+
+function doSearch(q) {
+  const results = $('searchResults');
+  const empty = $('searchEmpty');
+  if (!q.trim()) {
+    results.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  const lower = q.toLowerCase();
+  const matched = searchData.filter(d => d.title.toLowerCase().includes(lower) || d.text.toLowerCase().includes(lower));
+  if (!matched.length) {
+    results.innerHTML = '<div style="text-align:center;padding:30px;color:var(--c-text-muted)">검색 결과가 없습니다.</div>';
+    return;
+  }
+  results.innerHTML = matched.map(d => {
+    const highlighted = d.text.replace(new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi'), '<mark>$1</mark>');
+    return '<div class="search-result" onclick="goPage(\'' + d.page + '\')">' +
+      '<div class="search-result-title">' + d.title + '</div>' +
+      '<div class="search-result-text">' + highlighted + '</div></div>';
+  }).join('');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderFaq();
+  $('searchEmpty').style.display = 'block';
+  document.querySelectorAll('.screenshot-frame img').forEach(img => {
+    img.addEventListener('click', () => openLightbox(img.src));
+  });
+});
+</script>
+</body>
+</html>
