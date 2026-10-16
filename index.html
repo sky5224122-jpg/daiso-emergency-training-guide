@@ -1073,15 +1073,25 @@ function doSearch(q) {
 doSearch('');
 goPage('home');
 
-// ═══ 첫 화면 영상: 처음에는 끝까지 시청, 한 번 시청한 기기는 바로 입장 ═══
+// ═══ 첫 화면 영상: 처음 접속은 끝까지 시청해야 입장, 2회차 이상은 바로 입장 ═══
 (function intro() {
   const box = $('intro'), v = $('introVideo'), bar = $('introBar'), time = $('introTime'), btn = $('introBtn'), unmute = $('unmuteBtn');
+  const sub = document.querySelector('#intro .intro-sub');
   const KEY = 'cprGuideIntroWatched';
   let watched = false;
   try { watched = localStorage.getItem(KEY) === '1'; } catch (e) {}
   let ended = false, allowed = 0;
   const enable = label => { btn.disabled = false; btn.innerHTML = label + svg('i-right'); };
-  if (watched) enable('가이드 바로 시작하기 ');
+
+  if (watched) {
+    // 2회차 이상 접속: 영상을 보지 않아도 세부 내역으로 바로 입장
+    enable('가이드 바로 시작하기 ');
+    time.textContent = '시청 완료';
+    if (sub) sub.textContent = '이미 시청하셨습니다. 바로 시작하거나 다시 볼 수 있습니다.';
+  } else if (sub) {
+    // 처음 접속: 영상을 끝까지 시청해야 세부 내역으로 이동 가능
+    sub.textContent = '처음 접속하셨습니다. 영상을 끝까지 시청하면 가이드로 이동할 수 있습니다.';
+  }
 
   v.muted = false;
   const p = v.play();
@@ -1089,16 +1099,20 @@ goPage('home');
   unmute.onclick = () => { v.muted = false; unmute.classList.remove('show'); v.play().catch(() => {}); };
   v.addEventListener('volumechange', () => { if (!v.muted) unmute.classList.remove('show'); });
 
+  // 처음 접속일 때만 앞으로 건너뛰기를 막는다(진행바를 끌어도 본 지점으로 되돌림)
+  const guardSeek = () => {
+    if (watched || ended) return;
+    if (v.currentTime > allowed + 1.5) v.currentTime = allowed;
+    else allowed = Math.max(allowed, v.currentTime);
+  };
   v.addEventListener('timeupdate', () => {
     if (!v.duration) return;
     bar.style.width = (v.currentTime / v.duration * 100).toFixed(1) + '%';
     const left = Math.ceil(v.duration - v.currentTime);
-    time.textContent = left > 0 ? left + '초 남음' : '시청 완료';
-    if (!watched && !ended) {
-      if (v.currentTime > allowed + 1.5) v.currentTime = allowed;
-      else allowed = Math.max(allowed, v.currentTime);
-    }
+    if (!ended) time.textContent = left > 0 ? left + '초 남음' : '시청 완료';
+    guardSeek();
   });
+  v.addEventListener('seeking', guardSeek);
   v.addEventListener('ended', () => {
     ended = true; bar.style.width = '100%'; time.textContent = '시청 완료';
     try { localStorage.setItem(KEY, '1'); } catch (e) {}
