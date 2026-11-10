@@ -29,6 +29,8 @@ assets/qr-code.png          이 가이드 접속 QR
 tools/narration.json        영상 내레이션 대본(음성용 문장 / 자막 문장)
 tools/make_narration.py     내레이션 음성 생성 (Supertonic 3 한국어 음성, 오프라인)
 tools/build_intro_video.py  안내 영상 제작
+tools/build_report_template.js  검토·보고 PPT 틀 생성
+report/CLAUDE_아성다이소_보고서_틀.pptx  검토·보고 PPT 틀 (아성다이소 사내 발표자료 공통 문법 기준)
 .nojekyll                   GitHub Pages가 파일을 그대로 배포하도록 지정
 ```
 
@@ -41,6 +43,22 @@ tools/build_intro_video.py  안내 영상 제작
    - 장면 배치만 확인: `--preview 12,30,60` (해당 초의 장면을 PNG로 저장)
 
 화면 캡처를 바꿀 때는 `assets/screens/`의 같은 이름 파일을 교체한 뒤 영상을 다시 만듭니다.
+
+## 보고서 PPT 틀
+
+`report/CLAUDE_아성다이소_보고서_틀.pptx`는 「사내 발표자료 공통 문법」 기준으로 만든 검토·보고 PPT 틀입니다. `[ ]` 안의 문구와 예시 값을 바꿔서 씁니다.
+
+| 항목 | 기준 |
+|---|---|
+| 구성 | 표지 → 목차 → 0. 보고 요약 → 1. 검토 배경 → 2. 현황 분석 → 3. 개선 방안 → #첨부 → (숨김) 참고 |
+| 장표 뼈대 | 제목 → 헤드메시지(핵심 구절만 파란 굵게) → 좌 숫자·우 해석 → 각주(`*`) → 하단 결론(`▶`) → 쪽수 `n \| 전체` |
+| 글꼴 | 맑은 고딕, 모든 글자를 테마 글꼴로 지정 (디자인 탭에서 한 번에 변경) |
+| 글자 크기(pt) | 제목 18 굵게 / 헤드메시지 14 / 영역 소제목 12 굵게 / 표 본문 10 / 각주 9 / 하단 결론 13 |
+| 색 | 파랑(남색)·검정·회색 3색, 핵심 셀만 파랑·노랑 음영, 빨강은 장표당 1곳 |
+| 표 | 머리행 연회색 + 굵은 남색 글씨, 줄 간격 150%, 합계 열 파란 글씨 |
+
+- 쪽수는 고정 글자입니다. 장표를 넣거나 빼면 `n | 전체`를 함께 고칩니다.
+- 다시 만들기: `NODE_PATH=<pptxgenjs의 node_modules> APPLY_THEME=<pptx 스킬>/scripts/apply_theme.js node tools/build_report_template.js`
 
 ## 수정할 때
 
