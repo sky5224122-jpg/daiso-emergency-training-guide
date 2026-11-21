@@ -30,6 +30,7 @@ const REFER = /모두|전부|없다|없음|위의|위 내용|①|②|③|④|⑤
 const POSREF = /[①②③④⑤]|\d\s*번\s*(선지|보기)?|선지\s*\d/;
 
 function eligible(q) {
+  if (q.t === 'k') return false; // 기출은 원문 순서 유지
   if (!Array.isArray(q.o) || q.o.length !== 5) return false;
   if (q.o.some(o => NUMERIC.test(o) || COMBO.test(o.trim()) || REFER.test(o))) return false;
   if (POSREF.test(q.ex || '') || POSREF.test(q.q || '')) return false;

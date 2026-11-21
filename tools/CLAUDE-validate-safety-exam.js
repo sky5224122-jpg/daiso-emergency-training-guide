@@ -4,9 +4,12 @@
 const fs = require('fs'), path = require('path'), vm = require('vm');
 const DATA = path.join(__dirname, '..', 'CLAUDE-safety-exam', 'data');
 const ctx = { window: {} }; ctx.window = ctx; vm.createContext(ctx);
-const files = fs.readdirSync(DATA).filter(f => f.endsWith('.js')).sort();
-for (const f of files) {
-  try { vm.runInContext(fs.readFileSync(path.join(DATA, f), 'utf8'), ctx, { filename: f }); }
+const PRIV = path.join(DATA, '..', 'private');
+const files = fs.readdirSync(DATA).filter(f => f.endsWith('.js')).sort().map(f => path.join(DATA, f));
+if (fs.existsSync(PRIV)) fs.readdirSync(PRIV).filter(f => f.endsWith('.js')).sort().forEach(f => files.push(path.join(PRIV, f)));
+for (const fp of files) {
+  const f = path.basename(fp);
+  try { vm.runInContext(fs.readFileSync(fp, 'utf8'), ctx, { filename: f }); }
   catch (e) { console.error('구문 오류', f, e.message); process.exit(1); }
 }
 const QB1 = ctx.QB1 || [], QB2 = ctx.QB2 || [], GL = ctx.GLOSS || [];
@@ -17,7 +20,8 @@ for (const q of QB1) {
   const where = q.id || JSON.stringify(q).slice(0, 60);
   if (!q.id || ids.has(q.id)) errs.push(`ID 중복/누락: ${where}`); ids.add(q.id);
   if (!['law', 'gen', 'diag'].includes(q.s)) errs.push(`${where} 과목 코드 오류: ${q.s}`);
-  if (!['g', 'e'].includes(q.t)) errs.push(`${where} 유형 오류`);
+  if (!['g', 'e', 'k'].includes(q.t)) errs.push(`${where} 유형 오류`);
+  if (q.t === 'k' && (!q.rd || !(q.no >= 1))) errs.push(`${where} 기출 회차·번호 누락`);
   if (!q.tp || !q.q || !q.ex || !q.rf) errs.push(`${where} 필수 항목 누락(tp/q/ex/rf)`);
   if (!Array.isArray(q.o) || q.o.length !== 5) errs.push(`${where} 보기 수 ${q.o && q.o.length}`);
   else {
@@ -34,6 +38,7 @@ for (const q of QB2) {
   if (!['s', 'l'].includes(q.ty)) errs.push(`${where} 유형 오류`);
   if (q.pt !== (q.ty === 's' ? 5 : 25)) errs.push(`${where} 배점 오류`);
   if (!q.q || !q.ans || !Array.isArray(q.kw) || q.kw.length < 3) errs.push(`${where} 필수 항목 누락(q/ans/kw)`);
+  if (q.t === 'k' && (!q.rd || !(q.no >= 1))) errs.push(`${where} 기출 회차·번호 누락`);
 }
 // 글자 크기 정수 검사(index.html)
 const html = fs.readFileSync(path.join(DATA, '..', 'index.html'), 'utf8');
@@ -52,8 +57,8 @@ QB1.forEach(q => [q.q, (q.bx || []).join(' '), q.o.join(' '), q.ex].forEach(t =>
 QB2.forEach(q => [q.q, q.ans, q.kw.join(' ')].forEach(t => scan(t, q.id)));
 
 const by = k => QB1.filter(q => q.s === k);
-console.log(`1차 ${QB1.length}문항 (법령 ${by('law').length} · 안전일반 ${by('gen').length} · 기업진단 ${by('diag').length}) / 빈출 ${QB1.filter(q => q.t === 'g').length} · 예상 ${QB1.filter(q => q.t === 'e').length}`);
-console.log(`2차 ${QB2.length}문항 (기계 ${QB2.filter(q => q.fd === 'mech').length} · 전기 ${QB2.filter(q => q.fd === 'elec').length} · 건설 ${QB2.filter(q => q.fd === 'cons').length}) / 용어 ${GL.length}개`);
+console.log(`1차 ${QB1.length}문항 (법령 ${by('law').length} · 안전일반 ${by('gen').length} · 기업진단 ${by('diag').length}) / 빈출 ${QB1.filter(q => q.t === 'g').length} · 예상 ${QB1.filter(q => q.t === 'e').length}${QB1.some(q => q.t === 'k') ? ' · 기출 ' + QB1.filter(q => q.t === 'k').length + ' (비공개)' : ''}`);
+console.log(`2차 ${QB2.length}문항 (기계 ${QB2.filter(q => q.fd === 'mech').length} · 전기 ${QB2.filter(q => q.fd === 'elec').length} · 건설 ${QB2.filter(q => q.fd === 'cons').length}) / 용어 ${GL.length}개${QB2.some(q => q.t === 'k') ? ' / 2차 기출 ' + QB2.filter(q => q.t === 'k').length + ' (비공개)' : ''}`);
 for (const k in dist) console.log(`정답 분포 ${k}: ${dist[k].map((n, i) => (i + 1) + '번 ' + n).join(' · ')}`);
 if (process.argv.includes('--terms')) {
   const list = Object.entries(seen).sort((a, b) => b[1].size - a[1].size);

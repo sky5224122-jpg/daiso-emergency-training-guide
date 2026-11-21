@@ -142,6 +142,8 @@ main{max-width:760px;margin:0 auto;padding-block:16px 104px;padding-left:max(16p
 .b-g{background:var(--yellow-soft);color:var(--ink)}
 .b-g i{font-style:normal;letter-spacing:-1px;color:var(--ink-2)}
 .b-e{background:var(--blue-soft);color:var(--sig-blue)}
+.b-k{background:var(--ink);color:var(--surface)}
+.knote{margin:10px 0 0;font-size:var(--f-xs);color:var(--ink-2);background:var(--surface-2);border:1px dashed var(--line-2);border-radius:8px;padding:8px 10px}
 .b-s{background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line)}
 .b-ok{background:var(--green-soft);color:var(--sig-green)}
 .b-ng{background:var(--red-soft);color:var(--sig-red)}
@@ -389,7 +391,12 @@ var IC={
   ok:'<svg class="ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>',
   ng:'<svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg>'
 };
-function tBadge(q){ return q.t==='g' ? '<span class="badge b-g">빈출 유형'+(q.f?' <i>'+'★★★'.slice(0,q.f)+'</i>':'')+'</span>' : '<span class="badge b-e">예상</span>'; }
+var HAS_K=QB1.some(function(q){return q.t==='k';}), K_RD=(QB1.filter(function(q){return q.t==='k';})[0]||QB2.filter(function(q){return q.t==='k';})[0]||{}).rd||'';
+if(!HAS_K && S.f1 && S.f1.t==='k') S.f1.t='all';
+function kIds(){ return QB1.filter(function(q){return q.t==='k';}).sort(function(a,b){return a.no-b.no;}).map(function(q){return q.id;}); }
+function k1st(a,b){ return (a.t==='k'?0:1)-(b.t==='k'?0:1) || (a.t==='k'&&b.t==='k'?a.no-b.no:0); }
+function kNote(q){ if(q.t!=='k') return ''; return '<p class="knote">'+(q.ans?'모범답안은 CLAUDE가 작성했습니다(공식 답안 없음). 법령·고시·지침 원문과 대조하세요.':'정답은 CLAUDE 풀이입니다. 큐넷 최종정답과 다르면 최종정답을 따르세요.')+(q.cf==='m'?' <b>세부 수치·고시 원문에 따라 판단이 갈릴 수 있어 확인이 특히 필요한 문항입니다.</b>':'')+'</p>'; }
+function tBadge(q){ if(q.t==='k') return '<span class="badge b-k">'+esc(q.rd||'')+' 기출 '+(q.no||'')+'번</span>'; return q.t==='g' ? '<span class="badge b-g">빈출 유형'+(q.f?' <i>'+'★★★'.slice(0,q.f)+'</i>':'')+'</span>' : '<span class="badge b-e">예상</span>'; }
 
 /* ── counts ── */
 function cnt1(f){ return QB1.filter(f).length; }
@@ -409,6 +416,8 @@ function viewHome(){
        '<div class="stage"><span class="no">2차</span><div><b>전공필수 1과목 · 단답형 5 + 논술형 3 · 100분</b><span>기계 · 전기 · 건설 분야 수록 / 논술 4문항 중 필수 2 + 선택 1</span></div></div>'+
        '<div class="stage"><span class="no">3차</span><div><b>면접</b><span>전문지식·응용능력, 사명감·윤리의식, 의사발표의 정확성·논리성</span></div></div>'+
      '</div></section>';
+  if(HAS_K){ var kn2=QB2.filter(function(q){return q.t==='k';}).length;
+    h+='<section class="panel" style="border-color:var(--ink)"><div class="panel-h"><h2>'+esc(K_RD)+' 기출 수록</h2><span>1차 '+kIds().length+' · 2차 '+kn2+'문항</span></div><p class="small muted">시험지 원문에 CLAUDE 풀이 정답·해설과 2차 모범답안을 붙였습니다.</p><div class="row"><button class="btn primary" type="button" data-act="k-learn" style="flex:1">1차 풀기</button><button class="btn" type="button" data-act="k-mock" style="flex:1">실전 90분</button>'+(kn2?'<button class="btn" type="button" data-act="nav" data-to="p2" style="flex:1">2차 기출</button>':'')+'</div></section>'; }
   h+='<div class="stats">'+
      '<div class="stat"><span>풀어 본 1차 문항</span><b>'+st.solved+'</b><small>전체 '+QB1.length+'문항</small></div>'+
      '<div class="stat"><span>정답률</span><b>'+(st.acc==null?'—':st.acc+'%')+'</b><small>누적 '+(st.c+st.w)+'회 풀이</small></div>'+
@@ -429,6 +438,7 @@ function viewHome(){
   h+='</div></section>';
   h+='<div class="notice"><b>이 문제은행을 쓰는 법</b>'+
      '<span>· <b>빈출 유형</b>은 1~16회 시험에서 반복 출제된 조문·이론을 새로 구성한 문항으로, 회차별 기출 원문이 아닙니다. ★ 수는 빈출도입니다.</span>'+
+     (HAS_K?'<span>· <b>'+esc(K_RD)+' 기출</b>은 시험지 원문이며, 정답·해설·모범답안은 CLAUDE 풀이입니다. 큐넷 최종정답과 다르면 최종정답을 따르세요.</span>':'')+
      '<span>· <b>예상</b>은 최근 법령 개정(위험성평가 지침 2023, 폭염작업 2025 등)과 출제 경향을 반영한 신규 문항입니다.</span>'+
      '<span>· 법령은 2026년 11월 현행 기준입니다. 시험 직전에는 국가법령정보센터에서 개정 여부를 다시 확인하세요.</span>'+
      '<span>· 풀이 기록과 메모는 이 기기 브라우저에만 저장됩니다.</span></div>';
@@ -442,12 +452,13 @@ function viewP1(){
   var pool=filter1();
   h+='<section class="panel"><div class="panel-h"><h2>1차 공통필수 문제 풀기</h2><span>조건에 맞는 문항 '+pool.length+'개</span></div>';
   h+='<div class="seg" role="group" aria-label="과목">'+[['all','전체']].concat(SKEYS.map(function(k){return [k,SUBJ[k].short];})).map(function(o){ return '<button type="button" data-act="f1" data-k="s" data-v="'+o[0]+'" aria-pressed="'+(f.s===o[0])+'">'+o[1]+'</button>'; }).join('')+'</div>';
-  h+='<div class="row"><span class="lbl">유형</span><div class="chips">'+[['all','전체'],['g','빈출 유형'],['e','예상']].map(function(o){ return '<button class="chip" type="button" data-act="f1" data-k="t" data-v="'+o[0]+'" aria-pressed="'+(f.t===o[0])+'">'+o[1]+'</button>'; }).join('')+'</div></div>';
+  h+='<div class="row"><span class="lbl">유형</span><div class="chips">'+[['all','전체'],['g','빈출 유형'],['e','예상']].concat(HAS_K?[['k','기출']]:[]).map(function(o){ return '<button class="chip" type="button" data-act="f1" data-k="t" data-v="'+o[0]+'" aria-pressed="'+(f.t===o[0])+'">'+o[1]+'</button>'; }).join('')+'</div></div>';
   h+='<div class="row"><span class="lbl">문항 수</span><div class="chips">'+[10,20,40,0].map(function(n){ return '<button class="chip" type="button" data-act="f1" data-k="n" data-v="'+n+'" aria-pressed="'+(f.n===n)+'">'+(n?n+'문항':'전체')+'</button>'; }).join('')+'</div></div>';
   h+='<div class="row"><span class="lbl">순서</span><div class="chips">'+[['rand','무작위'],['seq','번호순']].map(function(o){ return '<button class="chip" type="button" data-act="f1" data-k="ord" data-v="'+o[0]+'" aria-pressed="'+(f.ord===o[0])+'">'+o[1]+'</button>'; }).join('')+'</div></div>';
   h+='<label class="toggle"><input type="checkbox" id="only-new" data-act="f1only"'+(f.only?' checked':'')+'> 안 푼 문제와 틀린 문제만</label>';
   h+='<button class="btn primary block" type="button" data-act="start1"'+(pool.length?'':' disabled')+'>'+IC.play+' '+Math.min(pool.length,f.n||pool.length)+'문항 풀기</button></section>';
   h+='<section class="panel"><div class="panel-h"><h2>1차 모의고사</h2><span>실제 시험 구성</span></div><p class="small muted">과목별 25문항씩 무작위 75문항, 90분 타이머. 제출하면 과목별 점수(문항당 4점)와 합격 여부(과목당 40점 이상·평균 60점 이상)를 보여 줍니다.</p><button class="btn block" type="button" data-act="mock-start">'+IC.clock+' 모의고사 시작</button></section>';
+  if(HAS_K) h+='<section class="panel" style="border-color:var(--ink)"><div class="panel-h"><h2>'+esc(K_RD)+' 기출</h2><span>1차 '+kIds().length+'문항 · 시험지 원문</span></div><p class="small muted">실제 시험지 원문 그대로입니다. 정답·해설은 CLAUDE 풀이이므로 큐넷 최종정답과 대조하세요.</p><div class="row"><button class="btn primary" type="button" data-act="k-learn" style="flex:1">'+IC.play+' 번호순으로 풀기</button><button class="btn" type="button" data-act="k-mock" style="flex:1">'+IC.clock+' 실전 90분</button></div></section>';
   h+='<section class="panel"><div class="panel-h"><h2>단원별로 풀기</h2><span>단원을 누르면 바로 시작</span></div>';
   (f.s==='all'?SKEYS:[f.s]).forEach(function(k){
     var L=QB1.filter(function(q){ return q.s===k && (f.t==='all'||q.t===f.t); }); if(!L.length) return;
@@ -473,11 +484,11 @@ function filter1(){
 function viewP2(){
   var f=S.f2, h='';
   var L=QB2.filter(function(q){ return q.fd===f.fd; });
-  var shown=L.filter(function(q){ return f.ty==='all'||q.ty===f.ty; });
+  var shown=L.filter(function(q){ return f.ty==='all'||q.ty===f.ty; }).sort(k1st);
   h+='<section class="panel"><div class="panel-h"><h2>2차 전공필수</h2><span>'+FIELD[f.fd]+' '+L.length+'문항</span></div>';
   h+='<div class="seg" role="group" aria-label="분야">'+FKEYS.map(function(k){ return '<button type="button" data-act="f2" data-k="fd" data-v="'+k+'" aria-pressed="'+(f.fd===k)+'">'+FIELD[k].replace('안전공학','')+'</button>'; }).join('')+'</div>';
   h+='<div class="row"><span class="lbl">유형</span><div class="chips">'+[['all','전체'],['s','단답형(5점)'],['l','논술형(25점)']].map(function(o){ return '<button class="chip" type="button" data-act="f2" data-k="ty" data-v="'+o[0]+'" aria-pressed="'+(f.ty===o[0])+'">'+o[1]+'</button>'; }).join('')+'</div></div>';
-  h+='<button class="btn primary block" type="button" data-act="set2-start"'+(L.length?'':' disabled')+'>'+IC.clock+' 실전 세트 시작 (단답 5 + 논술 4 · 100분)</button>';
+  h+='<button class="btn primary block" type="button" data-act="set2-start"'+(L.length?'':' disabled')+'>'+IC.clock+' 실전 세트 시작 (단답 5 + 논술 4 · 100분)</button>'+(L.some(function(q){return q.t==='k';})?'<button class="btn block" type="button" data-act="set2-k">'+IC.clock+' '+esc(K_RD)+' 기출 세트 (실제 시험 9문항 · 100분)</button>':'');
   h+='<p class="small muted">문항을 열어 답안을 먼저 써 본 뒤 모범답안과 채점 키워드로 스스로 채점하세요. 단답형은 5점, 논술형은 25점 기준입니다.</p></section>';
   h+='<div class="list">';
   if(!shown.length) h+='<div class="empty">이 분야 문항을 준비 중입니다.</div>';
@@ -571,7 +582,7 @@ function quizHTML(){
     var ok=picked===q.a;
     if(mode==='review' && picked==null) h+='<div class="verdict ng">'+IC.ng+' 답하지 않음 — 정답 '+NUM[q.a-1]+'</div>';
     else h+='<div class="verdict '+(ok?'ok':'ng')+'">'+(ok?IC.ok+' 정답입니다':IC.ng+' 오답 — 정답은 '+NUM[q.a-1])+'</div>';
-    h+='<section class="exp"><h4>해설</h4><div class="rich">'+md(q.ex)+'</div><p class="ref"><b>근거</b> '+esc(q.rf||'')+'</p></section>';
+    h+='<section class="exp"><h4>해설</h4><div class="rich">'+md(q.ex)+'</div><p class="ref"><b>근거</b> '+esc(q.rf||'')+'</p>'+kNote(q)+'</section>';
     h+=termBox([q.q,(q.bx||[]).join(' '),q.o.join(' '),q.ex]);
   }
   h+='</article>';
@@ -613,7 +624,7 @@ function submitMock(){
   var scores=SKEYS.map(function(k){ return per[k].n? Math.round(per[k].ok*100/per[k].n):0; });
   var avg=Math.round(scores.reduce(function(a,b){return a+b;},0)/3*10)/10;
   var pass=scores.every(function(s){return s>=40;}) && avg>=60;
-  R={kind:'mock',ids:ids,ans:Q.ans,per:per,scores:scores,avg:avg,pass:pass,title:'1차 모의고사 결과',back:'p1',used:Math.round((Date.now()-S.mock.start)/1000)};
+  R={kind:'mock',ids:ids,ans:Q.ans,per:per,scores:scores,avg:avg,pass:pass,title:(S.mock.title||'1차 모의고사')+' 결과',back:'p1',used:Math.round((Date.now()-S.mock.start)/1000)};
   S.mock.done=true; save(); stopTimer();
   OV='result'; renderOverlay();
 }
@@ -636,13 +647,14 @@ function resultHTML(){
 }
 
 /* mock */
-function startMock(){
-  var ids=[]; SKEYS.forEach(function(k){ ids=ids.concat(shuffle(QB1.filter(function(q){return q.s===k;}).map(function(q){return q.id;})).slice(0,25)); });
-  S.mock={ids:ids,ans:{},start:Date.now(),end:Date.now()+90*60*1000,done:false}; save();
-  Q={mode:'mock',ids:ids,i:0,ans:S.mock.ans,title:'1차 모의고사',back:'p1'};
+function startMock(ids,title){
+  if(!ids){ ids=[]; SKEYS.forEach(function(k){ ids=ids.concat(shuffle(QB1.filter(function(q){return q.s===k;}).map(function(q){return q.id;})).slice(0,25)); }); }
+  title=title||'1차 모의고사';
+  S.mock={ids:ids,ans:{},start:Date.now(),end:Date.now()+90*60*1000,done:false,title:title}; save();
+  Q={mode:'mock',ids:ids,i:0,ans:S.mock.ans,title:title,back:'p1'};
   openOverlay('mock');
 }
-function resumeMock(){ if(!S.mock||S.mock.done) return; Q={mode:'mock',ids:S.mock.ids,i:S.mock.i||0,ans:S.mock.ans,title:'1차 모의고사',back:'p1'}; openOverlay('mock'); }
+function resumeMock(){ if(!S.mock||S.mock.done) return; Q={mode:'mock',ids:S.mock.ids,i:S.mock.i||0,ans:S.mock.ans,title:S.mock.title||'1차 모의고사',back:'p1'}; openOverlay('mock'); }
 function startTimer(){ stopTimer(); timerH=setInterval(tick,1000); tick(); }
 function stopTimer(){ if(timerH){ clearInterval(timerH); timerH=null; } }
 function tick(){
@@ -657,7 +669,7 @@ var D2=null;   // {ids, i, show}
 var SET2=null; // {fd, ids, end, graded}
 function list2ids(src){
   if(src==='notes'){ var tab=S.nt; if(tab==='memo') return Object.keys(S.memo).filter(function(id){ return BY2[id]&&String(S.memo[id]).trim(); }); return S.bm.filter(function(id){return BY2[id];}); }
-  var f=S.f2; return QB2.filter(function(q){ return q.fd===f.fd && (f.ty==='all'||q.ty===f.ty); }).map(function(q){return q.id;});
+  var f=S.f2; return QB2.filter(function(q){ return q.fd===f.fd && (f.ty==='all'||q.ty===f.ty); }).sort(k1st).map(function(q){return q.id;});
 }
 function kwScore(q){ var st=S.kw[q.id]||{}; var k=q.kw||[]; var c=k.filter(function(_,i){return st[i];}).length; return {c:c,n:k.length,pt:k.length?Math.round(q.pt*c/k.length):0}; }
 function q2Block(q,showAns,inSet){
@@ -668,7 +680,7 @@ function q2Block(q,showAns,inSet){
   h+='</article>';
   if(showAns){
     var sc=kwScore(q);
-    h+='<section class="ans"><h4>모범답안</h4><div class="rich">'+md(q.ans)+'</div>';
+    h+='<section class="ans"><h4>모범답안</h4><div class="rich">'+md(q.ans)+'</div>'+kNote(q);
     if(q.kw&&q.kw.length){ h+='<h4>채점 키워드 — 내 답안에 들어간 항목을 체크하세요</h4><div class="kw">'+q.kw.map(function(k,i){ var on=(S.kw[q.id]||{})[i]; return '<label><input type="checkbox" data-kw="'+q.id+'" data-i="'+i+'"'+(on?' checked':'')+'><span>'+inline(k)+'</span></label>'; }).join('')+'</div>';
       h+='<div class="selfscore" id="ss-'+q.id+'"><span>자기채점</span><span class="mono">'+sc.c+'/'+sc.n+' 키워드 · 약 '+sc.pt+' / '+q.pt+'점</span></div>'; }
     h+=termBox([q.q,q.ans,(q.kw||[]).join(' ')]);
@@ -683,14 +695,15 @@ function q2HTML(){
   h+='</div><div class="ofoot"><div class="ofoot-in"><button class="btn narrow" type="button" data-act="q2prev"'+(D2.i===0?' disabled':'')+'>이전</button><button class="btn primary" type="button" data-act="q2next"'+(D2.i>=n-1?' disabled':'')+'>다음 문항</button></div></div></div>';
   return h;
 }
-function startSet2(){
-  var fd=S.f2.fd, L=QB2.filter(function(q){return q.fd===fd;});
-  var sh=shuffle(L.filter(function(q){return q.ty==='s';})).slice(0,5), lo=shuffle(L.filter(function(q){return q.ty==='l';})).slice(0,4);
-  SET2={fd:fd,ids:sh.map(function(q){return q.id;}),lids:lo.map(function(q){return q.id;}),end:Date.now()+100*60*1000,graded:false};
+function startSet2(useK){
+  var fd=S.f2.fd, L=QB2.filter(function(q){return q.fd===fd;}), sh, lo;
+  if(useK){ var K=L.filter(function(q){return q.t==='k';}).sort(k1st); sh=K.filter(function(q){return q.ty==='s';}); lo=K.filter(function(q){return q.ty==='l';}); }
+  else { sh=shuffle(L.filter(function(q){return q.ty==='s';})).slice(0,5); lo=shuffle(L.filter(function(q){return q.ty==='l';})).slice(0,4); }
+  SET2={fd:fd,k:!!useK,ids:sh.map(function(q){return q.id;}),lids:lo.map(function(q){return q.id;}),end:Date.now()+100*60*1000,graded:false};
   openOverlay('set2');
 }
 function set2HTML(){
-  var st=SET2, h='<div class="overlay" role="dialog"><div class="ohead"><div class="ohead-in"><button class="icon-btn" type="button" data-act="set2close" aria-label="닫기">'+IC.x+'</button><div class="ohead-t"><b>2차 실전 세트 · '+FIELD[st.fd]+'</b><small>단답 '+st.ids.length+' + 논술 '+st.lids.length+(st.graded?' · 채점':'')+'</small></div>'+(st.graded?'':'<span class="timer" id="timer">'+mmss((st.end-Date.now())/1000)+'</span>')+'</div></div><div class="obody">';
+  var st=SET2, h='<div class="overlay" role="dialog"><div class="ohead"><div class="ohead-in"><button class="icon-btn" type="button" data-act="set2close" aria-label="닫기">'+IC.x+'</button><div class="ohead-t"><b>2차 '+(st.k?esc(K_RD)+' 기출':'실전 세트')+' · '+FIELD[st.fd]+'</b><small>단답 '+st.ids.length+' + 논술 '+st.lids.length+(st.graded?' · 채점':'')+'</small></div>'+(st.graded?'':'<span class="timer" id="timer">'+mmss((st.end-Date.now())/1000)+'</span>')+'</div></div><div class="obody">';
   if(st.graded){
     var s1=0; st.ids.forEach(function(id){ s1+=kwScore(BY2[id]).pt; });
     var ls=st.lids.map(function(id){ return kwScore(BY2[id]).pt; });
@@ -713,7 +726,7 @@ function settingsHTML(confirmReset){
   h+='<div class="row"><span class="lbl">글자 크기</span><div class="chips">'+[['s','작게'],['m','보통'],['l','크게']].map(function(o){ return '<button class="chip" type="button" data-act="set-fs" data-v="'+o[0]+'" aria-pressed="'+(s.fs===o[0])+'">'+o[1]+'</button>'; }).join('')+'</div></div>';
   h+='<div class="row"><span class="lbl">화면</span><div class="chips">'+[['system','기기 설정'],['light','밝게'],['dark','어둡게']].map(function(o){ return '<button class="chip" type="button" data-act="set-theme" data-v="'+o[0]+'" aria-pressed="'+(s.theme===o[0])+'">'+o[1]+'</button>'; }).join('')+'</div></div>';
   h+='<div class="notice"><b>수록 문항</b>';
-  SKEYS.forEach(function(k){ var L=QB1.filter(function(q){return q.s===k;}); h+='<span>1차 '+SUBJ[k].name+': 빈출 유형 '+L.filter(function(q){return q.t==='g';}).length+' · 예상 '+L.filter(function(q){return q.t==='e';}).length+'</span>'; });
+  SKEYS.forEach(function(k){ var L=QB1.filter(function(q){return q.s===k;}); var nk=L.filter(function(q){return q.t==='k';}).length; h+='<span>1차 '+SUBJ[k].name+': 빈출 유형 '+L.filter(function(q){return q.t==='g';}).length+' · 예상 '+L.filter(function(q){return q.t==='e';}).length+(nk?' · 기출 '+nk:'')+'</span>'; });
   FKEYS.forEach(function(k){ var L=QB2.filter(function(q){return q.fd===k;}); h+='<span>2차 '+FIELD[k]+': 단답 '+L.filter(function(q){return q.ty==='s';}).length+' · 논술 '+L.filter(function(q){return q.ty==='l';}).length+'</span>'; });
   h+='<span>용어 사전: '+GL.length+'개 · 법령 기준: 2026년 11월</span></div>';
   h+=confirmReset ? '<div class="row"><button class="btn danger" type="button" data-act="reset-yes" style="flex:1">기록·메모 모두 지우기</button><button class="btn" type="button" data-act="settings" style="flex:1">취소</button></div>' : '<button class="btn" type="button" data-act="reset">풀이 기록 초기화</button>';
@@ -760,7 +773,7 @@ document.addEventListener('click',function(e){
     case 'reset-yes': var keep=S.set; S=blank(); S.set=keep; save(); $('#sheet').innerHTML=''; rerender(); pop('풀이 기록과 메모를 지웠습니다.'); break;
     case 'term': e.stopPropagation(); pop(fmtTerm(GL[+d.g])); break;
     case 'f1': S.f1[d.k]= d.k==='n' ? +d.v : d.v; save(); rerender(); break;
-    case 'start1': { var pool=filter1(); var ids=pool.map(function(q){return q.id;}); if(S.f1.ord==='rand') ids=shuffle(ids); if(S.f1.n) ids=ids.slice(0,S.f1.n); var ttl='1차 '+(S.f1.s==='all'?'전 과목':SUBJ[S.f1.s].short)+(S.f1.t==='g'?' · 빈출 유형':S.f1.t==='e'?' · 예상':''); startLearn(ids,ttl); break; }
+    case 'start1': { var pool=filter1(); var ids=pool.map(function(q){return q.id;}); if(S.f1.ord==='rand') ids=shuffle(ids); if(S.f1.n) ids=ids.slice(0,S.f1.n); var ttl='1차 '+(S.f1.s==='all'?'전 과목':SUBJ[S.f1.s].short)+(S.f1.t==='g'?' · 빈출 유형':S.f1.t==='e'?' · 예상':S.f1.t==='k'?' · 기출':''); startLearn(ids,ttl); break; }
     case 'topic': { var ids2=QB1.filter(function(q){ return q.s===d.s && q.tp===d.tp && (S.f1.t==='all'||q.t===S.f1.t); }).map(function(q){return q.id;}); startLearn(S.f1.ord==='rand'?shuffle(ids2):ids2, SUBJ[d.s].short+' · '+d.tp); break; }
     case 'today': { var w=shuffle(wrongList()), un=shuffle(QB1.filter(function(q){return !S.rec[q.id];})), rest=shuffle(QB1.filter(function(q){ var r=S.rec[q.id]; return r&&r.last===1; })); var pick=w.concat(un,rest).slice(0,20).map(function(q){return q.id;}); startLearn(shuffle(pick),'오늘의 20문제'); break; }
     case 'wrong-all': startLearn(shuffle(wrongList().map(function(q){return q.id;})),'오답 다시 풀기'); break;
@@ -768,6 +781,9 @@ document.addEventListener('click',function(e){
     case 'open1': startLearn([d.id],'문항 다시 보기'); break;
     case 'mock-open': location.hash='p1'; break;
     case 'mock-start': startMock(); break;
+    case 'k-learn': startLearn(kIds(), K_RD+' 기출 1차'); break;
+    case 'k-mock': startMock(kIds(), K_RD+' 기출 실전'); break;
+    case 'set2-k': startSet2(true); break;
     case 'mock-resume': resumeMock(); break;
     case 'mock-quit': S.mock=null; save(); rerender(); break;
     case 'opt': { var q=BY1[Q.ids[Q.i]], k=+d.k;
