@@ -199,5 +199,18 @@ window.GLOSS = [
 {k:'unfreezing',p:'언프리징',m:'해빙',u:'레빈의 변화 1단계, 변화 필요성 인식'},
 {k:'refreezing',p:'리프리징',m:'재동결',u:'레빈의 변화 3단계, 새로운 상태 정착'},
 {k:'GHS',p:'지에이치에스',m:'세계조화시스템',u:'화학물질 분류·표시를 국제적으로 통일한 기준'},
-{k:'K-REACH',p:'케이 리치',m:'화학물질 등록·평가법',u:'화학물질의 등록 및 평가 등에 관한 법률의 약칭'}
+{k:'K-REACH',p:'케이 리치',m:'화학물질 등록·평가법',u:'화학물질의 등록 및 평가 등에 관한 법률의 약칭'},
+/* 생산·품질·보전·보호구 추가 */
+{k:'Cp',p:'씨피',m:'공정능력지수(Process Capability)',u:'(규격상한 − 규격하한) ÷ 6σ, 1.33 이상이면 공정능력 충분'},
+{k:'USL',p:'유에스엘',m:'규격상한(Upper Specification Limit)',u:'제품 특성이 넘으면 안 되는 위쪽 한계값'},
+{k:'LSL',p:'엘에스엘',m:'규격하한(Lower Specification Limit)',u:'제품 특성이 그 아래로 내려가면 안 되는 아래쪽 한계값'},
+{k:'AQL',p:'에이큐엘',m:'합격품질수준(Acceptable Quality Level)',u:'샘플링검사에서 합격으로 볼 수 있는 최대 불량률, 생산자 위험과 연결'},
+{k:'LTPD',p:'엘티피디',m:'로트 허용불량률(Lot Tolerance Percent Defective)',u:'불합격시켜야 할 나쁜 로트의 불량률, 소비자 위험과 연결'},
+{k:'DMADV',p:'디마드브이',m:'6시그마 설계 절차',u:'Define·Measure·Analyze·Design·Verify, 신제품·신공정 설계에 사용'},
+{k:'BM',p:'비엠',m:'사후보전(Breakdown Maintenance)',u:'고장이 난 뒤에 수리하는 보전 방식'},
+{k:'PM',p:'피엠',m:'예방보전(Preventive Maintenance)',u:'정해진 주기나 사용량에 따라 고장 전에 점검·교체하는 보전'},
+{k:'MP',p:'엠피',m:'보전예방(Maintenance Prevention)',u:'설계·구입 단계부터 고장이 적고 보전하기 쉬운 설비를 만드는 활동'},
+{k:'PdM',p:'피디엠',m:'예지보전(Predictive Maintenance)',u:'진동·온도 등 상태를 감시해 이상 징후가 있을 때만 보전'},
+{k:'APF',p:'에이피에프',m:'할당보호계수(Assigned Protection Factor)',u:'호흡보호구가 줄여 줄 수 있는 농도 배수, 필요 보호계수 이상인 보호구를 선택'},
+{k:'EAP',p:'이에이피',m:'근로자지원프로그램(Employee Assistance Program)',u:'직무스트레스·정신건강 문제를 상담 등으로 돕는 조직 차원 프로그램'}
 ];
