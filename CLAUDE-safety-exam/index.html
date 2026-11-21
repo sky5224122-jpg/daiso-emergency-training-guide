@@ -272,7 +272,7 @@ main{max-width:760px;margin:0 auto;padding-block:16px 104px;padding-left:max(16p
 <header class="topbar">
   <div class="topbar-in">
     <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/></svg></span>
-    <div class="brand"><b>CLAUDE 산업안전지도사</b><small id="brand-sub">1차·2차 빈출 유형 + 예상문제</small></div>
+    <div class="brand"><b>CLAUDE 산업안전지도사</b><small id="brand-sub">2027년 제17회 시험 대비</small></div>
     <button class="icon-btn" type="button" data-act="settings" aria-label="설정"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
   </div>
 </header>
@@ -300,6 +300,11 @@ main{max-width:760px;margin:0 auto;padding-block:16px 104px;padding-left:max(16p
 <script src="data/CLAUDE-q1-set03.js"></script>
 <script src="data/CLAUDE-q1-set04.js"></script>
 <script src="data/CLAUDE-q1-set05.js"></script>
+<script src="data/CLAUDE-q1-set06.js"></script>
+<script src="data/CLAUDE-q1-set07.js"></script>
+<script src="data/CLAUDE-q1-set08.js"></script>
+<script src="data/CLAUDE-q1-set09.js"></script>
+<script src="data/CLAUDE-q1-set10.js"></script>
 <script src="data/CLAUDE-q2-cons.js"></script>
 <script src="data/CLAUDE-q2-elec.js"></script>
 <script src="data/CLAUDE-q2-mech.js"></script>
@@ -393,7 +398,7 @@ function wrongList(){ return QB1.filter(function(q){ var r=S.rec[q.id]; return r
 function viewHome(){
   var st=stat1(QB1), wl=wrongList().length;
   var h='';
-  h+='<section class="hero"><span class="eyebrow">2026년 제16회 시험 대비 · 문항 '+QB1.length+' + '+QB2.length+'</span>'+
+  h+='<section class="hero"><span class="eyebrow">2027년 제17회 시험 대비 · 문항 '+QB1.length+' + '+QB2.length+'</span>'+
      '<h1>산업안전지도사 1·2차 문제은행</h1>'+
      '<p>1~16회 시험에서 반복 출제된 쟁점을 새로 구성한 빈출 유형과 예상문제를 문항마다 해설·근거와 함께 풉니다.</p>'+
      '<div class="stages">'+
