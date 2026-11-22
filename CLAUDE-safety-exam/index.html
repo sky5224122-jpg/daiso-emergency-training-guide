@@ -404,6 +404,19 @@ function unlockK(pass,done){
   }).then(function(buf){ var txt=new TextDecoder().decode(buf); try{ localStorage.setItem('claude-k16-v1',txt); }catch(e){} done(true); })
   .catch(function(e){ done(false, e&&e.message==='nofile'?'file':'pass'); });
 }
+var DEFERRED=null, INSTALLED=false;
+try{ INSTALLED = matchMedia('(display-mode: standalone)').matches || navigator.standalone===true; }catch(e){}
+window.addEventListener('beforeinstallprompt',function(e){ e.preventDefault(); DEFERRED=e; try{ rerender(); }catch(x){} });
+window.addEventListener('appinstalled',function(){ DEFERRED=null; INSTALLED=true; try{ rerender(); }catch(x){} });
+function installHTML(){
+  var secure = location.protocol==='https:' || location.hostname==='localhost';
+  if(INSTALLED || !secure) return '';
+  var ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  var body = DEFERRED ? '<button class="btn primary block" type="button" data-act="pwa-install">'+IC.play+' 이 기기에 앱으로 설치</button>'
+    : ios ? '<p class="small muted">사파리에서 공유 버튼 → 「홈 화면에 추가」를 누르세요.</p>'
+    : '<p class="small muted">주소창 오른쪽의 설치 아이콘(모니터에 아래 화살표)을 누르거나, 메뉴(⋮) → 「앱 설치」를 누르세요.</p>';
+  return '<section class="panel"><div class="panel-h"><h2>앱으로 설치</h2><span>PC·휴대폰 공통</span></div><p class="small muted">설치하면 바탕화면·홈 화면에서 바로 열리고, 인터넷 없이도 쓸 수 있습니다.</p>'+body+'</section>';
+}
 function kLockHTML(){
   if(HAS_K) return '';
   return '<section class="panel" style="border-color:var(--ink)"><div class="panel-h"><h2>기출 잠금 해제</h2><span>2026년 제16회</span></div><p class="small muted">암호를 한 번 입력하면 이 기기에만 저장되고, 이후에는 인터넷 없이도 기출이 열립니다.</p><div class="row"><input id="k-pass" type="password" autocomplete="off" placeholder="암호" style="flex:1;min-width:0;border:1px solid var(--line-2);border-radius:8px;padding:10px;background:var(--surface);color:var(--ink);font:inherit"><button class="btn primary" type="button" data-act="k-unlock">풀기</button></div><p class="small" id="k-msg" role="status"></p></section>';
@@ -434,6 +447,7 @@ function viewHome(){
   if(HAS_K){ var kn2=QB2.filter(function(q){return q.t==='k';}).length;
     h+='<section class="panel" style="border-color:var(--ink)"><div class="panel-h"><h2>'+esc(K_RD)+' 기출 수록</h2><span>1차 '+kIds().length+' · 2차 '+kn2+'문항</span></div><p class="small muted">시험지 원문에 CLAUDE 풀이 정답·해설과 2차 모범답안을 붙였습니다.</p><div class="row"><button class="btn primary" type="button" data-act="k-learn" style="flex:1">1차 풀기</button><button class="btn" type="button" data-act="k-mock" style="flex:1">실전 90분</button>'+(kn2?'<button class="btn" type="button" data-act="nav" data-to="p2" style="flex:1">2차 기출</button>':'')+'</div></section>'; }
   h+=kLockHTML();
+  h+=installHTML();
   h+='<div class="stats">'+
      '<div class="stat"><span>풀어 본 1차 문항</span><b>'+st.solved+'</b><small>전체 '+QB1.length+'문항</small></div>'+
      '<div class="stat"><span>정답률</span><b>'+(st.acc==null?'—':st.acc+'%')+'</b><small>누적 '+(st.c+st.w)+'회 풀이</small></div>'+
@@ -797,6 +811,7 @@ document.addEventListener('click',function(e){
     case 'open1': startLearn([d.id],'문항 다시 보기'); break;
     case 'mock-open': location.hash='p1'; break;
     case 'mock-start': startMock(); break;
+    case 'pwa-install': if(DEFERRED){ DEFERRED.prompt(); DEFERRED.userChoice.then(function(){ DEFERRED=null; rerender(); }); } break;
     case 'k-unlock': { var pw=($('#k-pass')||{}).value||''; var msg=$('#k-msg'); if(!pw){ if(msg) msg.textContent='암호를 입력하세요.'; break; } if(msg) msg.textContent='확인 중…'; unlockK(pw,function(ok,why){ if(ok){ location.reload(); } else if(msg) msg.textContent= why==='file' ? '잠금 파일을 불러오지 못했습니다. 인터넷 연결을 확인하세요.' : '암호가 맞지 않습니다.'; }); break; }
     case 'k-learn': startLearn(kIds(), K_RD+' 기출 1차'); break;
     case 'k-mock': startMock(kIds(), K_RD+' 기출 실전'); break;
