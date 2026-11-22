@@ -1,0 +1,29 @@
+{
+  "name": "CLAUDE 산업안전지도사 문제은행",
+  "short_name": "CLAUDE 지도사",
+  "start_url": "./index.html#home",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F2F4F7",
+  "theme_color": "#1D5AA6",
+  "lang": "ko",
+  "icons": [
+    {
+      "src": "CLAUDE-icon-180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "CLAUDE-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "id": "./index.html",
+  "description": "산업안전지도사 1차·2차 문제은행 (2027년 제17회 대비)",
+  "orientation": "portrait",
+  "categories": [
+    "education"
+  ]
+}

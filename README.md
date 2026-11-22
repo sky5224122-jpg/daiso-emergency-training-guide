@@ -47,3 +47,25 @@ tools/build_intro_video.py  안내 영상 제작
 - 문구는 `index.html`에서 바로 고칩니다. FAQ는 `FAQ`, 검색은 `DATA`, 훈련 일정은 `SCHEDULE` 배열에 있습니다.
 - 글자 크기는 정수(px)로만 지정합니다.
 - 계정 비밀번호나 개인정보가 보이는 화면은 이 저장소에 올리지 않습니다 (공개 저장소).
+
+## CLAUDE 산업안전지도사 문제은행 (2027년 제17회 시험 대비)
+
+휴대폰용 산업안전지도사 시험 대비 앱입니다. 문항마다 해설과 법령·이론 근거를 붙였습니다.
+
+- 주소: https://sky5224122-jpg.github.io/daiso-emergency-training-guide/CLAUDE-safety-exam/
+- 1차(공통필수 3과목) 1,252문항: 빈출 유형 223 + 예상문제 1,029
+- 2차(기계·전기·건설) 60문항: 분야별 단답형 14 + 논술형 6, 모범답안·채점 키워드 포함
+- 학습 모드, 실전 모의고사(75문항·90분), 오늘의 20문제, 오답·북마크, 영어 용어 풀이(203개)
+- 빈출 유형은 지난 시험의 쟁점을 새로 구성한 문항이며 회차별 기출 원문이 아닙니다.
+
+```
+CLAUDE-safety-exam/index.html              앱 본문
+CLAUDE-safety-exam/data/CLAUDE-q1-*.js     1차 문항 (기본 3과목 + 예상문제 묶음 set01~set13)
+CLAUDE-safety-exam/data/CLAUDE-q2-*.js     2차 문항 (기계·전기·건설)
+CLAUDE-safety-exam/data/CLAUDE-glossary.js 영어 용어 풀이
+tools/CLAUDE-build-safety-exam.py          index.html 데이터 목록 갱신·검증, 단일 파일(--artifact) 만들기
+tools/CLAUDE-validate-safety-exam.js       문항 형식·중복·정답 분포 검증
+tools/CLAUDE-rebalance-answers.js          정답 번호 쏠림 바로잡기 (선지 순서만 바꿈)
+```
+
+문항을 추가한 뒤에는 `node tools/CLAUDE-rebalance-answers.js`와 `python3 tools/CLAUDE-build-safety-exam.py`를 차례로 실행합니다.
