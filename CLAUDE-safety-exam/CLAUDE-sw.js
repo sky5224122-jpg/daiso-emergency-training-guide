@@ -1,8 +1,8 @@
 /* CLAUDE 산업안전지도사 — 오프라인 사용을 위한 서비스워커(GitHub Pages 전용)
    설치할 때 화면·문항 데이터·글꼴 설정을 한꺼번에 저장하고, 이후에는 네트워크 우선(실패 시 저장본)으로 동작합니다.
    새 문항을 올리면 다음 접속 때 자동 갱신됩니다. */
-const CACHE = 'claude-cse-v2';
-const CORE = ['./', './index.html', './CLAUDE-manifest.webmanifest', './CLAUDE-icon-180.png', './CLAUDE-icon-512.png'];
+const CACHE = 'claude-cse-v3';
+const CORE = ['./', './index.html', './CLAUDE-manifest.webmanifest', './CLAUDE-icon-180.png', './CLAUDE-icon-512.png', './data/CLAUDE-k16.enc.json'];
 
 self.addEventListener('install', e => {
   e.waitUntil((async () => {
