@@ -22,6 +22,7 @@ def data_files():
     if g.exists():
         files.append(g)
     files += sorted(DATA.glob('CLAUDE-q1-*.js'), key=order_key)
+    files += sorted(DATA.glob('CLAUDE-ex-*.js'))
     files += sorted(DATA.glob('CLAUDE-q2-*.js'))
     return files
 

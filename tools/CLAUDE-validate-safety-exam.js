@@ -40,6 +40,15 @@ for (const q of QB2) {
   if (!q.q || !q.ans || !Array.isArray(q.kw) || q.kw.length < 3) errs.push(`${where} 필수 항목 누락(q/ans/kw)`);
   if (q.t === 'k' && (!q.rd || !(q.no >= 1))) errs.push(`${where} 기출 회차·번호 누락`);
 }
+// 보강 해설(EXP) 검사
+const EXP = ctx.EXP || {}; const byId = {}; QB1.forEach(q => { byId[q.id] = q; });
+let expN = 0, expShort = 0;
+for (const id in EXP) {
+  if (!byId[id]) { errs.push(`보강 해설의 문항 ID 없음: ${id}`); continue; }
+  expN++; if (String(EXP[id]).length < 300) expShort++;
+  if (!/정답 풀이/.test(EXP[id]) || !/오답 선지 분석/.test(EXP[id])) errs.push(`${id} 보강 해설 구조 누락(정답 풀이/오답 선지 분석)`);
+}
+if (expN) console.log(`보강 해설 ${expN}문항 (300자 미만 ${expShort})`);
 // 글자 크기 정수 검사(index.html)
 const html = fs.readFileSync(path.join(DATA, '..', 'index.html'), 'utf8');
 const dec = html.match(/font-size:\s*\d+\.\d+/g); if (dec) errs.push('소수점 글자 크기: ' + dec.join(', '));

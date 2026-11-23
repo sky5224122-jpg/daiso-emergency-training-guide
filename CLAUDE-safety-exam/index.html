@@ -422,6 +422,7 @@ function kLockHTML(){
   if(HAS_K) return '';
   return '<section class="panel" style="border-color:var(--ink)"><div class="panel-h"><h2>기출 잠금 해제</h2><span>2026년 제16회</span></div><p class="small muted">암호를 한 번 입력하면 이 기기에만 저장되고, 이후에는 인터넷 없이도 기출이 열립니다.</p><div class="row"><input id="k-pass" type="password" autocomplete="off" placeholder="암호" style="flex:1;min-width:0;border:1px solid var(--line-2);border-radius:8px;padding:10px;background:var(--surface);color:var(--ink);font:inherit"><button class="btn primary" type="button" data-act="k-unlock">풀기</button></div><p class="small" id="k-msg" role="status"></p></section>';
 }
+function exOf(q){ return (window.EXP&&window.EXP[q.id])||q.ex; }
 function kIds(){ return QB1.filter(function(q){return q.t==='k';}).sort(function(a,b){return a.no-b.no;}).map(function(q){return q.id;}); }
 function k1st(a,b){ return (a.t==='k'?0:1)-(b.t==='k'?0:1) || (a.t==='k'&&b.t==='k'?a.no-b.no:0); }
 function kNote(q){ if(q.t!=='k') return ''; return '<p class="knote">'+(q.ans?'모범답안은 CLAUDE가 작성했습니다(공식 답안 없음). 법령·고시·지침 원문과 대조하세요.':'정답은 CLAUDE 풀이입니다. 큐넷 최종정답과 다르면 최종정답을 따르세요.')+(q.cf==='m'?' <b>세부 수치·고시 원문에 따라 판단이 갈릴 수 있어 확인이 특히 필요한 문항입니다.</b>':'')+'</p>'; }
@@ -613,8 +614,8 @@ function quizHTML(){
     var ok=picked===q.a;
     if(mode==='review' && picked==null) h+='<div class="verdict ng">'+IC.ng+' 답하지 않음 — 정답 '+NUM[q.a-1]+'</div>';
     else h+='<div class="verdict '+(ok?'ok':'ng')+'">'+(ok?IC.ok+' 정답입니다':IC.ng+' 오답 — 정답은 '+NUM[q.a-1])+'</div>';
-    h+='<section class="exp"><h4>해설</h4><div class="rich">'+md(q.ex)+'</div><p class="ref"><b>근거</b> '+esc(q.rf||'')+'</p>'+kNote(q)+'</section>';
-    h+=termBox([q.q,(q.bx||[]).join(' '),q.o.join(' '),q.ex]);
+    h+='<section class="exp"><h4>해설</h4><div class="rich">'+md(exOf(q))+'</div><p class="ref"><b>근거</b> '+esc(q.rf||'')+'</p>'+kNote(q)+'</section>';
+    h+=termBox([q.q,(q.bx||[]).join(' '),q.o.join(' '),exOf(q)]);
   }
   h+='</article>';
   if(mode!=='learn' && Q.grid) h+=gridHTML();
