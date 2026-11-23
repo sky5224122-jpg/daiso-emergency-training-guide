@@ -53,7 +53,8 @@ html[data-fs="l"]{--f-xs:14px;--f-sm:15px;--f-base:18px;--f-q:19px;--f-md:19px;-
   color-scheme:dark;
 }
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent}
+body{overscroll-behavior-y:none}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:var(--f-base);line-height:1.65;letter-spacing:-0.2px;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:anywhere}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
 button,input,textarea,select{font:inherit;color:inherit}
@@ -258,7 +259,7 @@ main{max-width:760px;margin:0 auto;padding-block:16px 104px;padding-left:max(16p
 
 /* sheet & pop */
 .sheet-back{position:fixed;inset:0;z-index:60;background:rgba(10,16,24,.45);display:flex;align-items:flex-end;justify-content:center}
-.sheet{width:100%;max-width:760px;max-height:88vh;overflow-y:auto;background:var(--surface);border-radius:18px 18px 0 0;padding:18px max(16px,env(safe-area-inset-right,0px)) calc(18px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:14px}
+.sheet{overscroll-behavior:contain;width:100%;max-width:760px;max-height:88vh;overflow-y:auto;background:var(--surface);border-radius:18px 18px 0 0;padding:18px max(16px,env(safe-area-inset-right,0px)) calc(18px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:14px}
 .sheet h2{font-size:var(--f-lg)}
 .pop{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:70;width:min(560px,calc(100% - 32px));background:var(--ink);color:var(--surface);border-radius:12px;padding:12px 14px;font-size:var(--f-sm);line-height:1.55;box-shadow:0 10px 30px rgba(0,0,0,.25)}
 .pop b{color:var(--surface)}
@@ -310,6 +311,33 @@ main{max-width:760px;margin:0 auto;padding-block:16px 104px;padding-left:max(16p
 <script src="data/CLAUDE-q1-set11.js"></script>
 <script src="data/CLAUDE-q1-set12.js"></script>
 <script src="data/CLAUDE-q1-set13.js"></script>
+<script src="data/CLAUDE-ex-01.js"></script>
+<script src="data/CLAUDE-ex-02.js"></script>
+<script src="data/CLAUDE-ex-03.js"></script>
+<script src="data/CLAUDE-ex-04.js"></script>
+<script src="data/CLAUDE-ex-05.js"></script>
+<script src="data/CLAUDE-ex-06.js"></script>
+<script src="data/CLAUDE-ex-07.js"></script>
+<script src="data/CLAUDE-ex-08.js"></script>
+<script src="data/CLAUDE-ex-09.js"></script>
+<script src="data/CLAUDE-ex-10.js"></script>
+<script src="data/CLAUDE-ex-11.js"></script>
+<script src="data/CLAUDE-ex-12.js"></script>
+<script src="data/CLAUDE-ex-13.js"></script>
+<script src="data/CLAUDE-ex-14.js"></script>
+<script src="data/CLAUDE-ex-15.js"></script>
+<script src="data/CLAUDE-ex-16.js"></script>
+<script src="data/CLAUDE-ex-17.js"></script>
+<script src="data/CLAUDE-ex-18.js"></script>
+<script src="data/CLAUDE-ex-19.js"></script>
+<script src="data/CLAUDE-ex-20.js"></script>
+<script src="data/CLAUDE-ex-21.js"></script>
+<script src="data/CLAUDE-ex-22.js"></script>
+<script src="data/CLAUDE-ex-23.js"></script>
+<script src="data/CLAUDE-ex-24.js"></script>
+<script src="data/CLAUDE-ex-25.js"></script>
+<script src="data/CLAUDE-ex-26.js"></script>
+<script src="data/CLAUDE-ex-99.js"></script>
 <script src="data/CLAUDE-q2-cons.js"></script>
 <script src="data/CLAUDE-q2-elec.js"></script>
 <script src="data/CLAUDE-q2-mech.js"></script>
@@ -404,10 +432,24 @@ function unlockK(pass,done){
   }).then(function(buf){ var txt=new TextDecoder().decode(buf); try{ localStorage.setItem('claude-k16-v1',txt); }catch(e){} done(true); })
   .catch(function(e){ done(false, e&&e.message==='nofile'?'file':'pass'); });
 }
+var DEFERRED=null, INSTALLED=false;
+try{ INSTALLED = matchMedia('(display-mode: standalone)').matches || navigator.standalone===true; }catch(e){}
+window.addEventListener('beforeinstallprompt',function(e){ e.preventDefault(); DEFERRED=e; try{ rerender(); }catch(x){} });
+window.addEventListener('appinstalled',function(){ DEFERRED=null; INSTALLED=true; try{ rerender(); }catch(x){} });
+function installHTML(){
+  var secure = location.protocol==='https:' || location.hostname==='localhost';
+  if(INSTALLED || !secure) return '';
+  var ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  var body = DEFERRED ? '<button class="btn primary block" type="button" data-act="pwa-install">'+IC.play+' 이 기기에 앱으로 설치</button>'
+    : ios ? '<p class="small muted">사파리에서 공유 버튼 → 「홈 화면에 추가」를 누르세요.</p>'
+    : '<p class="small muted">주소창 오른쪽의 설치 아이콘(모니터에 아래 화살표)을 누르거나, 메뉴(⋮) → 「앱 설치」를 누르세요.</p>';
+  return '<section class="panel"><div class="panel-h"><h2>앱으로 설치</h2><span>PC·휴대폰 공통</span></div><p class="small muted">설치하면 바탕화면·홈 화면에서 바로 열리고, 인터넷 없이도 쓸 수 있습니다.</p>'+body+'</section>';
+}
 function kLockHTML(){
   if(HAS_K) return '';
   return '<section class="panel" style="border-color:var(--ink)"><div class="panel-h"><h2>기출 잠금 해제</h2><span>2026년 제16회</span></div><p class="small muted">암호를 한 번 입력하면 이 기기에만 저장되고, 이후에는 인터넷 없이도 기출이 열립니다.</p><div class="row"><input id="k-pass" type="password" autocomplete="off" placeholder="암호" style="flex:1;min-width:0;border:1px solid var(--line-2);border-radius:8px;padding:10px;background:var(--surface);color:var(--ink);font:inherit"><button class="btn primary" type="button" data-act="k-unlock">풀기</button></div><p class="small" id="k-msg" role="status"></p></section>';
 }
+function exOf(q){ return (window.EXP&&window.EXP[q.id])||q.ex; }
 function kIds(){ return QB1.filter(function(q){return q.t==='k';}).sort(function(a,b){return a.no-b.no;}).map(function(q){return q.id;}); }
 function k1st(a,b){ return (a.t==='k'?0:1)-(b.t==='k'?0:1) || (a.t==='k'&&b.t==='k'?a.no-b.no:0); }
 function kNote(q){ if(q.t!=='k') return ''; return '<p class="knote">'+(q.ans?'모범답안은 CLAUDE가 작성했습니다(공식 답안 없음). 법령·고시·지침 원문과 대조하세요.':'정답은 CLAUDE 풀이입니다. 큐넷 최종정답과 다르면 최종정답을 따르세요.')+(q.cf==='m'?' <b>세부 수치·고시 원문에 따라 판단이 갈릴 수 있어 확인이 특히 필요한 문항입니다.</b>':'')+'</p>'; }
@@ -434,6 +476,7 @@ function viewHome(){
   if(HAS_K){ var kn2=QB2.filter(function(q){return q.t==='k';}).length;
     h+='<section class="panel" style="border-color:var(--ink)"><div class="panel-h"><h2>'+esc(K_RD)+' 기출 수록</h2><span>1차 '+kIds().length+' · 2차 '+kn2+'문항</span></div><p class="small muted">시험지 원문에 CLAUDE 풀이 정답·해설과 2차 모범답안을 붙였습니다.</p><div class="row"><button class="btn primary" type="button" data-act="k-learn" style="flex:1">1차 풀기</button><button class="btn" type="button" data-act="k-mock" style="flex:1">실전 90분</button>'+(kn2?'<button class="btn" type="button" data-act="nav" data-to="p2" style="flex:1">2차 기출</button>':'')+'</div></section>'; }
   h+=kLockHTML();
+  h+=installHTML();
   h+='<div class="stats">'+
      '<div class="stat"><span>풀어 본 1차 문항</span><b>'+st.solved+'</b><small>전체 '+QB1.length+'문항</small></div>'+
      '<div class="stat"><span>정답률</span><b>'+(st.acc==null?'—':st.acc+'%')+'</b><small>누적 '+(st.c+st.w)+'회 풀이</small></div>'+
@@ -598,8 +641,8 @@ function quizHTML(){
     var ok=picked===q.a;
     if(mode==='review' && picked==null) h+='<div class="verdict ng">'+IC.ng+' 답하지 않음 — 정답 '+NUM[q.a-1]+'</div>';
     else h+='<div class="verdict '+(ok?'ok':'ng')+'">'+(ok?IC.ok+' 정답입니다':IC.ng+' 오답 — 정답은 '+NUM[q.a-1])+'</div>';
-    h+='<section class="exp"><h4>해설</h4><div class="rich">'+md(q.ex)+'</div><p class="ref"><b>근거</b> '+esc(q.rf||'')+'</p>'+kNote(q)+'</section>';
-    h+=termBox([q.q,(q.bx||[]).join(' '),q.o.join(' '),q.ex]);
+    h+='<section class="exp"><h4>해설</h4><div class="rich">'+md(exOf(q))+'</div><p class="ref"><b>근거</b> '+esc(q.rf||'')+'</p>'+kNote(q)+'</section>';
+    h+=termBox([q.q,(q.bx||[]).join(' '),q.o.join(' '),exOf(q)]);
   }
   h+='</article>';
   if(mode!=='learn' && Q.grid) h+=gridHTML();
@@ -797,6 +840,7 @@ document.addEventListener('click',function(e){
     case 'open1': startLearn([d.id],'문항 다시 보기'); break;
     case 'mock-open': location.hash='p1'; break;
     case 'mock-start': startMock(); break;
+    case 'pwa-install': if(DEFERRED){ DEFERRED.prompt(); DEFERRED.userChoice.then(function(){ DEFERRED=null; rerender(); }); } break;
     case 'k-unlock': { var pw=($('#k-pass')||{}).value||''; var msg=$('#k-msg'); if(!pw){ if(msg) msg.textContent='암호를 입력하세요.'; break; } if(msg) msg.textContent='확인 중…'; unlockK(pw,function(ok,why){ if(ok){ location.reload(); } else if(msg) msg.textContent= why==='file' ? '잠금 파일을 불러오지 못했습니다. 인터넷 연결을 확인하세요.' : '암호가 맞지 않습니다.'; }); break; }
     case 'k-learn': startLearn(kIds(), K_RD+' 기출 1차'); break;
     case 'k-mock': startMock(kIds(), K_RD+' 기출 실전'); break;
