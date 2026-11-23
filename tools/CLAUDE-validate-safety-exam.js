@@ -49,6 +49,11 @@ for (const id in EXP) {
   if (!/정답 풀이/.test(EXP[id]) || !/오답 선지 분석/.test(EXP[id])) errs.push(`${id} 보강 해설 구조 누락(정답 풀이/오답 선지 분석)`);
 }
 if (expN) console.log(`보강 해설 ${expN}문항 (300자 미만 ${expShort})`);
+// 해설의 "정답은 ○" 표기와 실제 정답 일치 검사 (보강 해설 우선)
+{ const N = '①②③④⑤'; let chk = 0;
+  for (const q of QB1) { const e = (EXP[q.id] || q.ex || ''); const m = String(e).match(/정답은\s*([①②③④⑤])/g); if (!m) continue; chk++;
+    for (const x of m) if (N.indexOf(x.slice(-1)) + 1 !== q.a) { errs.push(`${q.id} 해설의 정답(${x.slice(-1)})과 실제 정답(${q.a})이 다름`); break; } }
+  console.log(`해설 정답 표기 점검 ${chk}문항`); }
 // 글자 크기 정수 검사(index.html)
 const html = fs.readFileSync(path.join(DATA, '..', 'index.html'), 'utf8');
 const dec = html.match(/font-size:\s*\d+\.\d+/g); if (dec) errs.push('소수점 글자 크기: ' + dec.join(', '));
