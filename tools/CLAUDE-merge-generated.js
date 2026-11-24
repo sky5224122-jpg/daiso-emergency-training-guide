@@ -30,7 +30,7 @@ for (const f of fs.readdirSync(path.join(work, 'out')).filter(f => /^(law|gen|di
   const [s, n] = name.split('-');
   const set = { law: '20', gen: '21', diag: '22' }[s];
   fs.writeFileSync(path.join(out, `CLAUDE-q1-set${set}-${s}-${n}.js`),
-    `/* CLAUDE 산업안전지도사 — 1차 예상문제 (${s} ${n}) : 정답 풀이·오답 선지 분석·암기 포인트 해설 포함 */\nwindow.QB1 = window.QB1 || [];\nQB1.push(...${JSON.stringify(keep, null, 0).replace(/},\{/g, '},\n{')});\n`);
+    `/* CLAUDE 산업안전지도사 — 1차 예상문제 (${s} ${n}) : 정답 풀이·오답 선지 분석·암기 포인트 해설 포함 */\nwindow.QB1 = window.QB1 || [];\nQB1.push(\n${keep.map(q => JSON.stringify(q)).join(',\n')}\n);\n`);
   total += keep.length;
 }
 console.log('병합한 문항:', total, ' 제외:', rejected.length);
