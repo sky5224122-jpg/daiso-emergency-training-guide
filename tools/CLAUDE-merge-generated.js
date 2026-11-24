@@ -7,10 +7,15 @@ const work = process.argv[2]; if (!work) { console.error('작업폴더를 지정
 const out = path.join(__dirname, '..', 'CLAUDE-safety-exam', 'data');
 const N = '①②③④⑤';
 let total = 0, rejected = [];
+// 검토 결과 제외할 문항 ID 목록(선택): <작업폴더>/drop.json = ["L2041", ...]
+const dropFile = path.join(work, 'drop.json');
+const DROP = new Set(fs.existsSync(dropFile) ? JSON.parse(fs.readFileSync(dropFile, 'utf8')) : []);
+// 검토 결과 정정한 정답 번호(선택): <작업폴더>/fix.json = {"L2000": 3, ...}  (해설의 "정답은 ○" 표기와 함께 점검됨)
 for (const f of fs.readdirSync(path.join(work, 'out')).filter(f => /^(law|gen|diag)-\d+\.json$/.test(f)).sort()) {
   const arr = JSON.parse(fs.readFileSync(path.join(work, 'out', f), 'utf8'));
   const keep = [];
   for (const q of arr) {
+    if (DROP.has(q.id)) { rejected.push(q.id + ':drop'); continue; }
     const why = [];
     if (!/^[LGD]\d+$/.test(q.id || '')) why.push('id');
     if (!['law', 'gen', 'diag'].includes(q.s)) why.push('s');
