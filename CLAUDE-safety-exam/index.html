@@ -144,6 +144,9 @@ main{max-width:760px;margin:0 auto;padding-block:16px 104px;padding-left:max(16p
 .b-g i{font-style:normal;letter-spacing:-1px;color:var(--ink-2)}
 .b-e{background:var(--blue-soft);color:var(--sig-blue)}
 .b-k{background:var(--ink);color:var(--surface)}
+.tblw{overflow-x:auto}.tbl{width:100%;border-collapse:collapse;font-size:var(--f-sm)}.tbl th,.tbl td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left}.tbl th{color:var(--ink-3);font-weight:700;font-size:var(--f-xs)}.tbl td.n{font-family:var(--mono);text-align:right}.tbl th:not(:first-child){text-align:right}.tbl tr.sum td{font-weight:800;border-bottom:0}
+.clist{margin:10px 0 0;padding-left:18px;font-size:var(--f-xs);color:var(--ink-2)}.clist li{margin:3px 0}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:8px;margin-top:10px}.mcell{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px;border:1px solid var(--line-2);border-radius:10px;background:var(--surface);color:var(--ink);font:inherit;cursor:pointer}.mcell b{font-size:var(--f-sm)}.mcell span{font-size:var(--f-xs);color:var(--ink-3)}.mcell.ok{background:var(--green-soft);border-color:var(--sig-green)}.mcell.ng{background:var(--red-soft);border-color:var(--sig-red)}
 .knote{margin:10px 0 0;font-size:var(--f-xs);color:var(--ink-2);background:var(--surface-2);border:1px dashed var(--line-2);border-radius:8px;padding:8px 10px}
 .b-s{background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line)}
 .b-ok{background:var(--green-soft);color:var(--sig-green)}
@@ -397,7 +400,7 @@ function mmss(sec){ sec=Math.max(0,Math.floor(sec)); var m=Math.floor(sec/60), s
 
 /* ── storage (per-device convenience only) ── */
 var KEY='claude-cse-v1';
-function blank(){ return {rec:{},bm:[],memo:{},kw:{},set:{fs:'m',theme:'system'},f1:{s:'all',t:'all',n:20,ord:'rand',only:false},f2:{fd:'mech',ty:'all'},mock:null,nt:'wrong'}; }
+function blank(){ return {rec:{},bm:[],memo:{},kw:{},set:{fs:'m',theme:'system'},f1:{s:'all',t:'all',n:20,ord:'rand',only:false},f2:{fd:'mech',ty:'all'},mock:null,nt:'wrong',sets:{}}; }
 var S = (function(){ try{ var v=JSON.parse(localStorage.getItem(KEY)||'null'); if(!v) return blank(); var b=blank(); for(var k in b){ if(v[k]===undefined) v[k]=b[k]; } return v; }catch(e){ return blank(); } })();
 function save(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} }
 function isBm(id){ return S.bm.indexOf(id)>=0; }
@@ -480,6 +483,32 @@ function kLockHTML(){
   return '<section class="panel" style="border-color:var(--ink)"><div class="panel-h"><h2>기출 잠금 해제</h2><span>2026년 제16회</span></div><p class="small muted">암호를 한 번 입력하면 이 기기에만 저장되고, 이후에는 인터넷 없이도 기출이 열립니다.</p><div class="row"><input id="k-pass" type="password" autocomplete="off" placeholder="암호" style="flex:1;min-width:0;border:1px solid var(--line-2);border-radius:8px;padding:10px;background:var(--surface);color:var(--ink);font:inherit"><button class="btn primary" type="button" data-act="k-unlock">풀기</button></div><p class="small" id="k-msg" role="status"></p></section>';
 }
 function exOf(q){ return (window.EXP&&window.EXP[q.id])||q.ex; }
+var MOCKS=(function(){
+  var out=[], pools={}; SKEYS.forEach(function(k){ pools[k]=[]; });
+  QB1.forEach(function(q){ if(q.t!=='k' && pools[q.s]) pools[q.s].push(q.id); });
+  function seeded(a,seed){ a=a.slice().sort(); var x=seed; for(var i=a.length-1;i>0;i--){ x=(x*1103515245+12345)&0x7fffffff; var j=x%(i+1); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+  var sh={}, n=Infinity; SKEYS.forEach(function(k,i){ sh[k]=seeded(pools[k],7001+i*13); n=Math.min(n,Math.floor(sh[k].length/25)); });
+  if(!isFinite(n)) n=0;
+  for(var r=0;r<n;r++){ var ids=[]; SKEYS.forEach(function(k){ ids=ids.concat(sh[k].slice(r*25,r*25+25)); }); out.push(ids); }
+  return out;
+})();
+window.__MOCKS=MOCKS; // 점검용(읽기 전용)
+function compHTML(){
+  var rows=SKEYS.map(function(k){ var L=QB1.filter(function(q){return q.s===k;}); var c=function(t){ return L.filter(function(q){return q.t===t;}).length; }; return {n:SUBJ[k].short,k:c('k'),g:c('g'),e:c('e'),t:L.length}; });
+  var tot={n:'합계',k:0,g:0,e:0,t:0}; rows.forEach(function(r){ tot.k+=r.k; tot.g+=r.g; tot.e+=r.e; tot.t+=r.t; }); rows.push(tot);
+  var h='<section class="panel"><div class="panel-h"><h2>문제은행 구성</h2><span>1차 '+QB1.length+'문항 · 2차 '+QB2.length+'문항</span></div><div class="tblw"><table class="tbl"><thead><tr><th>과목</th><th>기출</th><th>빈출 유형</th><th>예상</th><th>합계</th></tr></thead><tbody>';
+  rows.forEach(function(r,i){ h+='<tr'+(i===rows.length-1?' class="sum"':'')+'><td>'+r.n+'</td><td class="n">'+(r.k||'—')+'</td><td class="n">'+r.g+'</td><td class="n">'+r.e+'</td><td class="n">'+r.t+'</td></tr>'; });
+  var k2=QB2.filter(function(q){return q.t==='k';}).length;
+  h+='</tbody></table></div><ul class="clist"><li><b>기출</b> — 실제 시험지 원문(정답·해설은 CLAUDE 풀이)'+(HAS_K?': '+esc(K_RD)+' 1차 '+kIds().length+' · 2차 '+k2+'문항':'. 이 기기에서는 아직 잠겨 있습니다')+'. 제1~15회는 공식 시험지를 받으면 추가합니다.</li><li><b>빈출 유형</b> — 반복 출제 쟁점을 새로 구성한 문항 · <b>예상</b> — 최신 개정과 출제 경향을 반영한 신규 문항</li><li><b>예상 모의고사</b> — 빈출·예상 문항으로 만든 75문항 고정 회차 '+MOCKS.length+'개(1차 화면에서 응시)</li></ul></section>';
+  return h;
+}
+function mockGridHTML(){
+  if(!MOCKS.length) return '';
+  var done=0; for(var i=1;i<=MOCKS.length;i++){ if((S.sets||{})[i]) done++; }
+  var h='<section class="panel"><div class="panel-h"><h2>예상 모의고사 회차</h2><span>응시 '+done+' / '+MOCKS.length+'회</span></div><p class="small muted">회차마다 법령·안전일반·기업진단 25문항씩 75문항, 90분입니다. 회차 구성은 항상 같고, 점수와 합격 여부가 기록됩니다. 번호를 누르면 시작합니다.</p><div class="mgrid">';
+  for(var j=1;j<=MOCKS.length;j++){ var r=(S.sets||{})[j]; h+='<button type="button" class="mcell'+(r?(r.pass?' ok':' ng'):'')+'" data-act="mock-n" data-n="'+j+'"><b>제'+j+'회</b><span>'+(r?r.avg+'점':'미응시')+'</span></button>'; }
+  return h+'</div></section>';
+}
 function kIds(){ return QB1.filter(function(q){return q.t==='k';}).sort(function(a,b){return a.no-b.no;}).map(function(q){return q.id;}); }
 function k1st(a,b){ return (a.t==='k'?0:1)-(b.t==='k'?0:1) || (a.t==='k'&&b.t==='k'?a.no-b.no:0); }
 function kNote(q){ if(q.t!=='k') return ''; return '<p class="knote">'+(q.ans?'모범답안은 CLAUDE가 작성했습니다(공식 답안 없음). 법령·고시·지침 원문과 대조하세요.':'정답은 CLAUDE 풀이입니다. 큐넷 최종정답과 다르면 최종정답을 따르세요.')+(q.cf==='m'?' <b>세부 수치·고시 원문에 따라 판단이 갈릴 수 있어 확인이 특히 필요한 문항입니다.</b>':'')+'</p>'; }
@@ -506,6 +535,7 @@ function viewHome(){
   if(HAS_K){ var kn2=QB2.filter(function(q){return q.t==='k';}).length;
     h+='<section class="panel" style="border-color:var(--ink)"><div class="panel-h"><h2>'+esc(K_RD)+' 기출 수록</h2><span>1차 '+kIds().length+' · 2차 '+kn2+'문항</span></div><p class="small muted">시험지 원문에 CLAUDE 풀이 정답·해설과 2차 모범답안을 붙였습니다.</p><div class="row"><button class="btn primary" type="button" data-act="k-learn" style="flex:1">1차 풀기</button><button class="btn" type="button" data-act="k-mock" style="flex:1">실전 90분</button>'+(kn2?'<button class="btn" type="button" data-act="nav" data-to="p2" style="flex:1">2차 기출</button>':'')+'</div></section>'; }
   h+=kLockHTML();
+  h+=compHTML();
   h+=installHTML();
   h+='<div class="stats">'+
      '<div class="stat"><span>풀어 본 1차 문항</span><b>'+st.solved+'</b><small>전체 '+QB1.length+'문항</small></div>'+
@@ -547,6 +577,7 @@ function viewP1(){
   h+='<label class="toggle"><input type="checkbox" id="only-new" data-act="f1only"'+(f.only?' checked':'')+'> 안 푼 문제와 틀린 문제만</label>';
   h+='<button class="btn primary block" type="button" data-act="start1"'+(pool.length?'':' disabled')+'>'+IC.play+' '+Math.min(pool.length,f.n||pool.length)+'문항 풀기</button></section>';
   h+='<section class="panel"><div class="panel-h"><h2>1차 모의고사</h2><span>실제 시험 구성</span></div><p class="small muted">과목별 25문항씩 무작위 75문항, 90분 타이머. 제출하면 과목별 점수(문항당 4점)와 합격 여부(과목당 40점 이상·평균 60점 이상)를 보여 줍니다.</p><button class="btn block" type="button" data-act="mock-start">'+IC.clock+' 모의고사 시작</button></section>';
+  h+=mockGridHTML();
   if(HAS_K) h+='<section class="panel" style="border-color:var(--ink)"><div class="panel-h"><h2>'+esc(K_RD)+' 기출</h2><span>1차 '+kIds().length+'문항 · 시험지 원문</span></div><p class="small muted">실제 시험지 원문 그대로입니다. 정답·해설은 CLAUDE 풀이이므로 큐넷 최종정답과 대조하세요.</p><div class="row"><button class="btn primary" type="button" data-act="k-learn" style="flex:1">'+IC.play+' 번호순으로 풀기</button><button class="btn" type="button" data-act="k-mock" style="flex:1">'+IC.clock+' 실전 90분</button></div></section>';
   h+='<section class="panel"><div class="panel-h"><h2>단원별로 풀기</h2><span>단원을 누르면 바로 시작</span></div>';
   (f.s==='all'?SKEYS:[f.s]).forEach(function(k){
@@ -714,6 +745,7 @@ function submitMock(){
   var avg=Math.round(scores.reduce(function(a,b){return a+b;},0)/3*10)/10;
   var pass=scores.every(function(s){return s>=40;}) && avg>=60;
   R={kind:'mock',ids:ids,ans:Q.ans,per:per,scores:scores,avg:avg,pass:pass,title:(S.mock.title||'1차 모의고사')+' 결과',back:'p1',used:Math.round((Date.now()-S.mock.start)/1000)};
+  if(S.mock.setNo){ S.sets=S.sets||{}; var old=S.sets[S.mock.setNo]; if(!old||avg>=old.avg) S.sets[S.mock.setNo]={avg:avg,pass:pass,scores:scores,t:Date.now()}; }
   S.mock.done=true; save(); stopTimer();
   OV='result'; renderOverlay();
 }
@@ -736,10 +768,10 @@ function resultHTML(){
 }
 
 /* mock */
-function startMock(ids,title){
+function startMock(ids,title,setNo){
   if(!ids){ ids=[]; SKEYS.forEach(function(k){ ids=ids.concat(shuffle(QB1.filter(function(q){return q.s===k;}).map(function(q){return q.id;})).slice(0,25)); }); }
   title=title||'1차 모의고사';
-  S.mock={ids:ids,ans:{},start:Date.now(),end:Date.now()+90*60*1000,done:false,title:title}; save();
+  S.mock={ids:ids,ans:{},start:Date.now(),end:Date.now()+90*60*1000,done:false,title:title,setNo:setNo||0}; save();
   Q={mode:'mock',ids:ids,i:0,ans:S.mock.ans,title:title,back:'p1'};
   openOverlay('mock');
 }
@@ -870,6 +902,7 @@ document.addEventListener('click',function(e){
     case 'open1': startLearn([d.id],'문항 다시 보기'); break;
     case 'mock-open': location.hash='p1'; break;
     case 'mock-start': startMock(); break;
+    case 'mock-n': { var no=+d.n; if(MOCKS[no-1]) startMock(MOCKS[no-1].slice(), '예상 모의고사 제'+no+'회', no); break; }
     case 'pwa-install': if(DEFERRED){ DEFERRED.prompt(); DEFERRED.userChoice.then(function(){ DEFERRED=null; rerender(); }); } break;
     case 'k-unlock': { var pw=($('#k-pass')||{}).value||''; var msg=$('#k-msg'); if(!pw){ if(msg) msg.textContent='암호를 입력하세요.'; break; } if(msg) msg.textContent='확인 중…'; unlockK(pw,function(ok,why){ if(ok){ location.reload(); } else if(msg) msg.textContent= why==='file' ? '잠금 파일을 불러오지 못했습니다. 인터넷 연결을 확인하세요.' : '암호가 맞지 않습니다.'; }); break; }
     case 'k-learn': startLearn(kIds(), K_RD+' 기출 1차'); break;
