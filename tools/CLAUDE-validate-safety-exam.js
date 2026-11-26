@@ -74,6 +74,14 @@ const by = k => QB1.filter(q => q.s === k);
 console.log(`1차 ${QB1.length}문항 (법령 ${by('law').length} · 안전일반 ${by('gen').length} · 기업진단 ${by('diag').length}) / 빈출 ${QB1.filter(q => q.t === 'g').length} · 예상 ${QB1.filter(q => q.t === 'e').length}${QB1.some(q => q.t === 'k') ? ' · 기출 ' + QB1.filter(q => q.t === 'k').length + ' (비공개)' : ''}`);
 console.log(`2차 ${QB2.length}문항 (기계 ${QB2.filter(q => q.fd === 'mech').length} · 전기 ${QB2.filter(q => q.fd === 'elec').length} · 건설 ${QB2.filter(q => q.fd === 'cons').length}) / 용어 ${GL.length}개${QB2.some(q => q.t === 'k') ? ' / 2차 기출 ' + QB2.filter(q => q.t === 'k').length + ' (비공개)' : ''}`);
 for (const k in dist) console.log(`정답 분포 ${k}: ${dist[k].map((n, i) => (i + 1) + '번 ' + n).join(' · ')}`);
+// 정답 길이 편향 점검 — 긴 문장 보기 문항만(기출·짧은 조합형 제외). 정답만 눈에 띄게 길면 길이로 찍어 맞힐 수 있음
+{ const L = s => String(s).replace(/\s+/g, '').length; let n = 0, lg = 0, st = 0;
+  for (const q of QB1) { if (q.t === 'k' || q.o.every(o => L(o) <= 12)) continue; n++;
+    const ls = q.o.map(L), c = ls[q.a - 1], mo = Math.max(...ls.filter((_, i) => i !== q.a - 1));
+    if (c >= mo) lg++; if (c > mo * 1.15) st++; }
+  const p = x => (x / n * 100).toFixed(1);
+  if (n) console.log(`정답 길이 편향: 정답이 가장 긴 보기 ${p(lg)}% · 15% 이상 더 긴 것 ${p(st)}% (${n}문항 기준, 무작위면 약 20%)`);
+  if (n && st / n > 0.1) console.log('주의: 정답이 눈에 띄게 긴 문항이 10%를 넘습니다. 새 문항은 오답 보기 길이를 정답에 맞추세요.'); }
 if (process.argv.includes('--terms')) {
   const list = Object.entries(seen).sort((a, b) => b[1].size - a[1].size);
   console.log(`용어사전에 없는 영어 ${list.length}개:`); console.log(list.map(([w, s]) => `${w}(${s.size})`).join(' '));
